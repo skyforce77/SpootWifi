@@ -1,0 +1,9 @@
+name: SpootWifi
+main: fr.Skyforce77.SpootWifi.SpootWifi
+version: 0.1
+depend: [Spout]
+softdepend: [Spout, JukeIt]
+description:
+commands:
+  
+     
