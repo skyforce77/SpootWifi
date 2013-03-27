@@ -247,5 +247,10 @@ public class Channel implements Serializable{
 		}
 		return active;
 	}
+	
+	public Integer parseInt()
+	{
+		return channel;
+	}
 
 }

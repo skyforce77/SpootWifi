@@ -53,7 +53,7 @@ public class SendingPacket implements Runnable{
 				if(is != null)
 				{
 					SpoutItemStack sis = new SpoutItemStack(is);
-					if(sis.isCustomItem() && sis.getMaterial() instanceof ItemReceiver && ItemSave.getChannel(is).equals(event.getChannel()))
+					if(sis.isCustomItem() && sis.getMaterial() instanceof ItemReceiver && ItemSave.getChannel(is) == event.getChannel().parseInt())
 					{
 						ItemReceiver ir = (ItemReceiver)sis.getMaterial();
 						ir.onPacketReceived(event.getPacket(), is, (SpoutPlayer)sp);
