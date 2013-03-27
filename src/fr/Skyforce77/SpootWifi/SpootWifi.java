@@ -18,7 +18,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.block.design.Texture;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
@@ -51,6 +50,7 @@ import fr.Skyforce77.SpootWifi.Materials.Extended.WirelessSniffer;
 import fr.Skyforce77.SpootWifi.Saves.ItemSave;
 import fr.Skyforce77.SpootWifi.Saves.Save;
 import fr.Skyforce77.SpootWifi.Saves.Storage;
+import fr.Skyforce77.SpootWifi.Utils.RessourceManager;
 import fr.moreblocks.skyforce77.Main;
 import fr.moreblocks.skyforce77.Utils.Colors;
 
@@ -95,8 +95,7 @@ public class SpootWifi extends JavaPlugin implements Listener{
 		save = Save.Deserialize(this.getDataFolder().getPath()+"/Save.SpootWifi");
 		storage = Storage.Deserialize(this.getDataFolder().getPath()+"/BlockStorage.SpootWifi");
 		
-		texture = new Texture(this, "https://dl.dropbox.com/u/38885163/plugins/SpootWifi/terrain.png", 256,256,16);
-		SpoutManager.getFileManager().addToPreLoginCache(this, "https://dl.dropbox.com/u/38885163/plugins/SpootWifi/terrain.png");
+		texture = new Texture(this, RessourceManager.getTexture("terrain.png"), 256,256,16);
 		
 		transmitter = new Transmitter(this, "Wireless Transmitter");
 		receiver = new Receiver(this, "Wireless Receiver");
@@ -117,8 +116,8 @@ public class SpootWifi extends JavaPlugin implements Listener{
 		wirelesslamp = new WirelessLamp(this, "Wireless Redstone Lamp");
 		sniffer = new WirelessSniffer(this, "Wireless Sniffer");
 		radio = new Radio(this, "Radio");
-		remote = new Remote(this, "Wireless Remote", "https://dl.dropbox.com/u/38885163/plugins/SpootWifi/remote.png");
-		ironstick = new GenericCustomItem(this, "Iron Stick", "https://dl.dropbox.com/u/38885163/plugins/SpootWifi/ironstick.png");
+		remote = new Remote(this, "Wireless Remote", RessourceManager.getTexture("remote.png"));
+		ironstick = new GenericCustomItem(this, "Iron Stick", RessourceManager.getTexture("ironstick.png"));
 		getServer().getPluginManager().registerEvents(this, this);
 		RecipesManager.createRecipes();
 		

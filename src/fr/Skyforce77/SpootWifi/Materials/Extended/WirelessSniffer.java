@@ -9,11 +9,12 @@ import fr.Skyforce77.SpootWifi.SpootWifi;
 import fr.Skyforce77.SpootWifi.GUI.ItemChooseGui;
 import fr.Skyforce77.SpootWifi.Materials.Basics.ItemReceiver;
 import fr.Skyforce77.SpootWifi.Saves.ItemSave;
+import fr.Skyforce77.SpootWifi.Utils.RessourceManager;
 
 public class WirelessSniffer extends ItemReceiver{
 
 	public WirelessSniffer(Plugin plugin, String name) {
-		super(plugin, name, "https://dl.dropbox.com/u/38885163/plugins/SpootWifi/sniffer.png");
+		super(plugin, name, RessourceManager.getTexture("sniffer.png"));
 	}
 	
 	@Override

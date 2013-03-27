@@ -7,6 +7,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import fr.Skyforce77.SpootWifi.SpootWifi;
 import fr.Skyforce77.SpootWifi.Materials.Basics.ItemReceiver;
+import fr.Skyforce77.SpootWifi.Utils.RessourceManager;
 import fr.Skyforce77.SpootWifi.WifiPackets.MusicPacket;
 import fr.Skyforce77.SpootWifi.WifiPackets.NotificationPacket;
 import fr.Skyforce77.SpootWifi.WifiPackets.SoundEffectPacket;
@@ -15,7 +16,7 @@ import fr.Skyforce77.SpootWifi.WifiPackets.WifiPacket;
 public class Radio extends ItemReceiver{
 
 	public Radio(Plugin plugin, String name) {
-		super(plugin, name, "https://dl.dropbox.com/u/38885163/plugins/SpootWifi/radio.png");
+		super(plugin, name, RessourceManager.getTexture("radio.png"));
 	}
 
 	@Override
