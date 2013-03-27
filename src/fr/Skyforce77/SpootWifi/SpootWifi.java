@@ -92,6 +92,7 @@ public class SpootWifi extends JavaPlugin implements Listener{
 	public void onEnable()
 	{
 		plugin = this;
+		RessourceManager.LoadConfig();
 		save = Save.Deserialize(this.getDataFolder().getPath()+"/Save.SpootWifi");
 		storage = Storage.Deserialize(this.getDataFolder().getPath()+"/BlockStorage.SpootWifi");
 		
@@ -136,8 +137,6 @@ public class SpootWifi extends JavaPlugin implements Listener{
         }
 	}
 	
-	
-
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent e)
 	{
