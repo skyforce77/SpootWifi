@@ -202,11 +202,7 @@ public class SpootWifi extends JavaPlugin implements Listener{
 		
 			if(block.getCustomBlock() != null)
 			{
-				if(block.getCustomBlock() instanceof Transmitter)
-				{
-					e.setCancelled(true);
-				}
-				if(block.getCustomBlock() instanceof  Receiver)
+				if(block.getCustomBlock() instanceof Configurable || block.getCustomBlock() instanceof Simple)
 				{
 					e.setCancelled(true);
 				}
@@ -221,11 +217,7 @@ public class SpootWifi extends JavaPlugin implements Listener{
 		
 		if(block.getCustomBlock() != null)
 		{
-			if(block.getCustomBlock() instanceof Transmitter)
-			{
-				e.setCancelled(true);
-			}
-			if(block.getCustomBlock() instanceof Receiver)
+			if(block.getCustomBlock() instanceof Configurable || block.getCustomBlock() instanceof Simple)
 			{
 				e.setCancelled(true);
 			}

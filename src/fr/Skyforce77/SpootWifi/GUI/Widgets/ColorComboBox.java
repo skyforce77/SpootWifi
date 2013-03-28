@@ -6,10 +6,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.gui.GenericComboBox;
+import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import fr.Skyforce77.SpootWifi.SpootWifi;
+import fr.Skyforce77.SpootWifi.Materials.Extended.ColorTransmitter;
 import fr.Skyforce77.SpootWifi.Saves.Channel;
 
 public class ColorComboBox extends GenericComboBox{
@@ -44,7 +47,19 @@ public class ColorComboBox extends GenericComboBox{
 			if(color != null)
 			{
 				SpootWifi.save.getChannel(b).getSWBlock(b).getStorage().addByte("WoolColor", color.getWoolData());
-				p.sendNotification("Color set", text, Material.WOOL);
+				p.sendNotification("Color set", text, new SpoutItemStack(35, color.getWoolData()), 2000);
+				
+				if(((SpoutBlock)b).getCustomBlock() instanceof ColorTransmitter)
+				{
+					if(((SpoutBlock)b).getCustomBlockData() >= 16)
+					{
+						((SpoutBlock)b).setCustomBlockData((byte)(color.getWoolData()+16));
+					}
+					else
+					{
+						((SpoutBlock)b).setCustomBlockData(color.getWoolData());
+					}
+				}
 			}
 			else
 			{
