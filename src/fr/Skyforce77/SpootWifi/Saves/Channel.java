@@ -230,7 +230,12 @@ public class Channel implements Serializable{
 						}
 						else
 						{
-							((ItemReceiver)sis.getMaterial()).onPacketReceived(event.getPacket(), is, (SpoutPlayer)sp);
+							PacketReceiveEvent receive = new PacketReceiveEvent(event, new PacketOperator(sp));
+							Bukkit.getPluginManager().callEvent(receive);
+							if(!receive.isCancelled())
+							{
+								((ItemReceiver)sis.getMaterial()).onPacketReceived(event.getPacket(), is, (SpoutPlayer)sp);
+							}
 						}
 					}
 				}
