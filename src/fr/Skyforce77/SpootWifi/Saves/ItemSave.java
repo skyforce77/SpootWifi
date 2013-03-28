@@ -41,6 +41,36 @@ public class ItemSave {
 		return CraftItemStack.asCraftMirror(nmsis);
 	}
 	
+	public static Integer getOption(ItemStack is, String option)
+	{
+		net.minecraft.server.v1_4_R1.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
+		
+		if(nmsis.tag == null)
+		{
+			return 0;
+		}
+		
+		if(nmsis.tag.hasKey(option))
+		{
+			return nmsis.tag.getInt(option);
+		}
+		
+		return 0;
+	}
+	
+	public static ItemStack setOption(ItemStack is, String option, int num)
+	{
+		net.minecraft.server.v1_4_R1.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
+		
+		if(nmsis.tag == null)
+		{
+			nmsis.tag = new NBTTagCompound();
+		}
+		
+		nmsis.tag.setInt(option, num);
+		return CraftItemStack.asCraftMirror(nmsis);
+	}
+	
 	public static Block getBlock(ItemStack is)
 	{
 		net.minecraft.server.v1_4_R1.ItemStack nmsis = CraftItemStack.asNMSCopy(is);

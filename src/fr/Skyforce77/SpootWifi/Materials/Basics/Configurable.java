@@ -7,7 +7,7 @@ import org.getspout.spoutapi.block.design.BlockDesign;
 import org.getspout.spoutapi.material.block.GenericCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import fr.Skyforce77.SpootWifi.GUI.ItemChooseGui;
+import fr.Skyforce77.SpootWifi.GUI.BlockItemChooseGui;
 
 public class Configurable extends GenericCustomBlock{
 
@@ -106,7 +106,7 @@ public class Configurable extends GenericCustomBlock{
 	}
 
 	public void onRightClick(Player player, ItemStack item) {
-		new ItemChooseGui(this.getName(), (SpoutPlayer)player, item);
+		new BlockItemChooseGui(this.getName(), (SpoutPlayer)player, item);
 	}
 
 }

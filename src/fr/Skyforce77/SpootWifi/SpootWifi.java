@@ -89,16 +89,16 @@ public class SpootWifi extends JavaPlugin implements Listener{
 
 	public void onDisable()
     {
-		save.Serialize(this.getDataFolder()+"/Save.SpootWifi");
-		storage.Serialize(this.getDataFolder()+"/BlockStorage.SpootWifi");
+		save.Serialize(this.getDataFolder()+"/Ressources/Storage/Save.SpootWifi");
+		storage.Serialize(this.getDataFolder()+"/Ressources/Storage/BlockStorage.SpootWifi");
     }
 
 	public void onEnable()
 	{
 		plugin = this;
 		RessourceManager.LoadConfig();
-		save = Save.Deserialize(this.getDataFolder().getPath()+"/Save.SpootWifi");
-		storage = Storage.Deserialize(this.getDataFolder().getPath()+"/BlockStorage.SpootWifi");
+		save = Save.Deserialize(this.getDataFolder().getPath()+"/Ressources/Storage/Save.SpootWifi");
+		storage = Storage.Deserialize(this.getDataFolder().getPath()+"/Ressources/Storage/BlockStorage.SpootWifi");
 		
 		texture = new Texture(this, RessourceManager.getTexture("terrain.png"), 256,256,16);
 		
@@ -153,10 +153,18 @@ public class SpootWifi extends JavaPlugin implements Listener{
 			if(block.getCustomBlock() instanceof Transmitter)
 			{
 				save.addTransmitter(ItemSave.getChannel(e.getPlayer().getItemInHand()), block, e.getPlayer());
+				if(ItemSave.getOption(e.getPlayer().getItemInHand(), "AutoChannel") == 1)
+				{
+					e.getPlayer().setItemInHand(ItemSave.setChannel(e.getPlayer().getItemInHand(), ItemSave.getChannel(e.getPlayer().getItemInHand())+1));
+				}
 			}
 			if(block.getCustomBlock() instanceof Receiver)
 			{
 				save.addReceiver(ItemSave.getChannel(e.getPlayer().getItemInHand()), block, e.getPlayer());
+				if(ItemSave.getOption(e.getPlayer().getItemInHand(), "AutoChannel") == 1)
+				{
+					e.getPlayer().setItemInHand(ItemSave.setChannel(e.getPlayer().getItemInHand(), ItemSave.getChannel(e.getPlayer().getItemInHand())+1));
+				}
 			}
 		}
 	}
