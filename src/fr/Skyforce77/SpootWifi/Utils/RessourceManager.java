@@ -7,6 +7,8 @@ import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.getspout.spoutapi.SpoutManager;
+
 import fr.Skyforce77.SpootWifi.SpootWifi;
 
 public class RessourceManager {
@@ -15,11 +17,13 @@ public class RessourceManager {
 	{
 		try
 		{
+			File file;
 			File dir = new File(SpootWifi.plugin.getDataFolder(), "Ressources/Textures");
 			if (!dir.exists()) dir.mkdirs();
 			
 			String copy = new File("Ressources/Textures", texturename).getPath();
 			SpootWifi.plugin.saveResource(copy, true);
+			file = new File(SpootWifi.plugin.getDataFolder()+"/Ressources/Textures/"+texturename);
 			
 			if(SpootWifi.plugin.getConfig().contains("texturepack") && !SpootWifi.plugin.getConfig().getString("texturepack").equals("default"))
 			{
@@ -29,12 +33,13 @@ public class RessourceManager {
 				
 				if(texturepack.exists())
 				{
-					ZipFile file = new ZipFile(texturepack);
-					ZipEntry entry = file.getEntry(texturename);
+					ZipFile tfile = new ZipFile(texturepack);
+					ZipEntry entry = tfile.getEntry(texturename);
 					if(entry != null)
 					{
-						FileOutputStream fileoutputstream = new FileOutputStream(SpootWifi.plugin.getDataFolder()+"/Ressources/Textures/"+texturename);             
-						InputStream is = file.getInputStream(entry);
+						file = new File(SpootWifi.plugin.getDataFolder()+"/Ressources/Textures/"+SpootWifi.plugin.getConfig().getString("texturepack")+"-"+texturename);
+						FileOutputStream fileoutputstream = new FileOutputStream(file);             
+						InputStream is = tfile.getInputStream(entry);
 						while (is.available() > 0) {fileoutputstream.write(is.read());}	
 						fileoutputstream.close(); 
 						is.close();
@@ -42,7 +47,9 @@ public class RessourceManager {
 				}
 			}
 			
-			return SpootWifi.plugin.getDataFolder()+"/Ressources/Textures/"+texturename;
+			SpoutManager.getFileManager().addToPreLoginCache(SpootWifi.plugin, file);
+			
+			return file.toString();
 		}
 		catch(Exception e)
 		{
