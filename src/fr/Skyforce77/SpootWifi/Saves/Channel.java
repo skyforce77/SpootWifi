@@ -200,8 +200,15 @@ public class Channel implements Serializable{
 					Bukkit.getPluginManager().callEvent(receive);
 					if(!receive.isCancelled())
 					{
-						SendingPacket sending = new SendingPacket(event, new PacketOperator(sb));
-						Bukkit.getScheduler().runTaskLater(SpootWifi.plugin, sending, sending.getSendTime());
+						if(SpootWifi.plugin.getConfig().getBoolean("timedpackets"))
+						{
+							SendingPacket sending = new SendingPacket(event, new PacketOperator(sb));
+							Bukkit.getScheduler().runTaskLater(SpootWifi.plugin, sending, sending.getSendTime());
+						}
+						else
+						{
+							((Receiver)cb).onPacketReceived(event.getPacket(), sb);
+						}
 					}
 				}
 			}
@@ -217,7 +224,14 @@ public class Channel implements Serializable{
 					SpoutItemStack sis = new SpoutItemStack(is);
 					if(sis.isCustomItem() && sis.getMaterial() instanceof ItemReceiver && ItemSave.getChannel(is).equals(this.channel))
 					{
-						send = true;
+						if(SpootWifi.plugin.getConfig().getBoolean("timedpackets"))
+						{
+							send = true;
+						}
+						else
+						{
+							((ItemReceiver)sis.getMaterial()).onPacketReceived(event.getPacket(), is, (SpoutPlayer)sp);
+						}
 					}
 				}
 			}

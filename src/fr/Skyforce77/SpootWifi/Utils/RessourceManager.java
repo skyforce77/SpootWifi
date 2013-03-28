@@ -60,13 +60,10 @@ public class RessourceManager {
 	
 	public static void LoadConfig()
 	{
-		if(!new File(SpootWifi.plugin.getDataFolder()+"/config.yml").exists())
-		{
-			SpootWifi.plugin.getLogger().log(Level.CONFIG, "Generating configuration...");
-			SpootWifi.plugin.getConfig().addDefault("texturepack", "default");
-			SpootWifi.plugin.getConfig().options().copyDefaults(true);
-			SpootWifi.plugin.saveConfig();
-		}
+		SpootWifi.plugin.getConfig().addDefault("texturepack", "default");
+		SpootWifi.plugin.getConfig().addDefault("timedpackets", false);
+		SpootWifi.plugin.getConfig().options().copyDefaults(true);
+		SpootWifi.plugin.saveConfig();
 	}
 
 }
