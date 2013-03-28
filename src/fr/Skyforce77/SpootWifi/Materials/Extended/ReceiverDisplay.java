@@ -27,11 +27,11 @@ public class ReceiverDisplay extends Receiver{
 	{
 		if(design == 1)
 		{
-			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{0,2,2,9,2,0});
+			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{0,2,2,64,2,0});
 		}
 		else if(design == 0)
 		{
-			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{3,5,5,8,5,3});
+			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{3,5,5,79,5,3});
 		}
 		else
 		{

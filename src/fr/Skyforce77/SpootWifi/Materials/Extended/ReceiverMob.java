@@ -22,11 +22,11 @@ public class ReceiverMob extends Receiver{
 	{
 		if(design == 1)
 		{
-			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{49,49,49,49,49,49});
+			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{8,8,8,8,8,8});
 		}
 		else
 		{
-			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{50,50,50,50,50,50});
+			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{9,9,9,9,9,9});
 		}
 	}
 	

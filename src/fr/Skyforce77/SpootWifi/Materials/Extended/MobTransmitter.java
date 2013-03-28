@@ -28,11 +28,11 @@ public class MobTransmitter extends Transmitter{
 	{
 		if(design == 1)
 		{
-			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{49,1,1,1,1,49});
+			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{8,1,1,1,1,8});
 		}
 		else if(design == 0)
 		{
-			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{50,4,4,4,4,50});
+			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{9,4,4,4,4,9});
 		}
 		else
 		{
