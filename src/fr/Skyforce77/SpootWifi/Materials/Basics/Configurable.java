@@ -10,6 +10,8 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import fr.Skyforce77.SpootWifi.GUI.BlockItemChooseGui;
 
 public class Configurable extends GenericCustomBlock{
+	
+	private boolean hasgui = true;
 
 	public Configurable(Plugin plugin, String name, boolean isOpaque,
 			BlockDesign design, boolean rotate, boolean mirroredRotate,
@@ -106,7 +108,16 @@ public class Configurable extends GenericCustomBlock{
 	}
 
 	public void onRightClick(Player player, ItemStack item) {
+		if(hasgui)
 		new BlockItemChooseGui(this.getName(), (SpoutPlayer)player, item);
+	}
+	
+	public Boolean hasGui() {
+		return hasgui;
+	}
+	
+	public void setGui(Boolean gui) {
+		this.hasgui = gui;
 	}
 
 }

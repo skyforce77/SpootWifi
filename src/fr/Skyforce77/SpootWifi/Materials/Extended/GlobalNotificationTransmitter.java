@@ -23,6 +23,7 @@ public class GlobalNotificationTransmitter extends NotificationTransmitter{
 		super(plugin, name);
 		setBlockDesign(getDesign(plugin,0), 0);
 		setBlockDesign(getDesign(plugin,1), 1);
+		setGui(false);
 	}
 	
 	private static BlockDesign getDesign(Plugin p,int design)
