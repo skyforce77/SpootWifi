@@ -18,7 +18,7 @@ public class MusicSlider extends GenericSlider{
 	@Override
 	public void onSliderDrag(SliderDragEvent event) {
 		SpootWifi.save.getChannel(sb).getSWBlock(sb).getStorage().addFloat("MusicPower", event.getNewPosition());
-		setText(getSliderPosition()+"");
+		setText("Volume: "+((int)(getSliderPosition()*100))+"%");
 		super.onSliderDrag(event);
 	}
 

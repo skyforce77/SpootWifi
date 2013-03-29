@@ -92,7 +92,7 @@ public class MusicChooseGui extends GenericPopup {
 		
 		MusicSlider slider = new MusicSlider((SpoutBlock)b);
 		slider.setSliderPosition(SpootWifi.save.getChannel(b).getSWBlock(b).getStorage().getFloat("MusicPower"));
-		slider.setText(slider.getSliderPosition()+"");
+		slider.setText("Volume: "+((int)(slider.getSliderPosition()*100))+"%");
 		slider.setPriority(RenderPriority.Low);
 		
 		container.addChildren(music, slider,new MusicChooseButton(b, music).setText("Apply Music").setPriority(RenderPriority.Low));
