@@ -107,11 +107,12 @@ public class RecipesManager {
 		SpoutManager.getMaterialManager().registerSpoutRecipe(receiverpixel);
 		
 		SpoutShapedRecipe receivercoloredpixel = new SpoutShapedRecipe(new SpoutItemStack(SpootWifi.receivercoloredpixel))
-		.shape("A","BDC")
+		.shape("A","BDC", "E")
 		.setIngredient('A', MaterialData.redWool)
 		.setIngredient('B', MaterialData.greenWool)
 		.setIngredient('C', MaterialData.blueWool)
-		.setIngredient('D', SpootWifi.receiver);
+		.setIngredient('E', MaterialData.whiteWool)
+		.setIngredient('D', SpootWifi.receiverpixel);
 		SpoutManager.getMaterialManager().registerSpoutRecipe(receivercoloredpixel);
 		
 		SpoutShapedRecipe receiverfirework = new SpoutShapedRecipe(new SpoutItemStack(SpootWifi.receiverfirework))
