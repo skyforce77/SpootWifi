@@ -34,6 +34,7 @@ import fr.Skyforce77.SpootWifi.Materials.Basics.Transmitter;
 import fr.Skyforce77.SpootWifi.Materials.Extended.ColorTransmitter;
 import fr.Skyforce77.SpootWifi.Materials.Extended.Fireplace;
 import fr.Skyforce77.SpootWifi.Materials.Extended.FireworkTransmitter;
+import fr.Skyforce77.SpootWifi.Materials.Extended.GlobalNotificationTransmitter;
 import fr.Skyforce77.SpootWifi.Materials.Extended.LightningBlock;
 import fr.Skyforce77.SpootWifi.Materials.Extended.MobTransmitter;
 import fr.Skyforce77.SpootWifi.Materials.Extended.MusicTransmitter;
@@ -74,6 +75,7 @@ public class SpootWifi extends JavaPlugin implements Listener{
 	public static CustomBlock receiverfirework = null;
 	public static CustomBlock transmitterfirework = null;
 	public static CustomBlock transmitternotification = null;
+	public static CustomBlock globaltransmitternotification = null;
 	public static CustomBlock receivermob = null;
 	public static CustomBlock transmittermob = null;
 	public static CustomBlock fireplace = null;
@@ -116,6 +118,7 @@ public class SpootWifi extends JavaPlugin implements Listener{
 		receiverfirework = new ReceiverFirework(this, "Wireless Firework Launcher");
 		transmitterfirework = new FireworkTransmitter(this, "Wireless Firework Transmitter");
 		transmitternotification = new NotificationTransmitter(this, "Wireless Notification Transmitter");
+		globaltransmitternotification = new GlobalNotificationTransmitter(this, "Global Notification Transmitter");
 		transmittermob = new MobTransmitter(this, "Wireless Mob Transmitter");
 		receivermob = new ReceiverMob(this, "Wireless Mob Receiver");
 		fireplace = new Fireplace(this, "Redstone Fireplace");
