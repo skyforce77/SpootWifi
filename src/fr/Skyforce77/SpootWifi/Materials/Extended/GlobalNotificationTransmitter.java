@@ -69,7 +69,10 @@ public class GlobalNotificationTransmitter extends NotificationTransmitter{
 			SpoutManager.getMaterialManager().overrideBlock(b, b.getCustomBlock(), (byte)1);
 			for(SpoutPlayer sp : Spout.getInstance().getOnlinePlayers())
 			{
-				sp.sendNotification(c.getSWBlock(b).getStorage().getString("title"),c.getSWBlock(b).getStorage().getString("text"),((MFItemStack)c.getSWBlock(b).getStorage().getObject("ItemStack")).toItemStack(), 5000);
+				ItemStack render = ((MFItemStack)c.getSWBlock(b).getStorage().getObject("ItemStack")).toItemStack();
+				String title = Radio.getString(c.getSWBlock(b).getStorage().getString("title"), sp, render);
+				String text = Radio.getString(c.getSWBlock(b).getStorage().getString("text"), sp, render);
+				sp.sendNotification(title, text, render, 5000);
 			}
 		}
 		else if(!powered && b.getCustomBlockData() == Byte.parseByte("1"))
