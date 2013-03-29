@@ -53,13 +53,8 @@ public class ReceiverJukeBox extends Receiver{
 		if(wp instanceof MusicPacket)
 		{
 			MusicPacket mp = (MusicPacket)wp;
-			try
-			{
-				SpoutManager.getSoundManager().playGlobalCustomMusic(SpootWifi.plugin, mp.getMusic(), true, b.getLocation(), range);
-			}
-			catch(Exception e)
-			{
-			}
+			SpoutManager.getSoundManager().playGlobalCustomMusic(SpootWifi.plugin, mp.getMusic(), true, b.getLocation(), range, (int)(mp.getPower()*100));
+			System.out.println(mp.getPower()*100);
 		}
 		super.onPacketReceived(wp, b);
 	}

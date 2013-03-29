@@ -24,7 +24,8 @@ public class Radio extends ItemReceiver{
 		if(wp instanceof MusicPacket)
 		{
 			MusicPacket packet = (MusicPacket)wp;
-			SpoutManager.getSoundManager().playCustomMusic(SpootWifi.plugin, p, packet.getMusic(), true);
+			SpoutManager.getSoundManager().playCustomMusic(SpootWifi.plugin, p, packet.getMusic(), true, null, -1, (int)(packet.getPower()*100));
+			System.out.println(packet.getPower()*100);
 		}
 		if(wp instanceof NotificationPacket)
 		{

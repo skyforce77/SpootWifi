@@ -1,6 +1,7 @@
 package fr.Skyforce77.SpootWifi.GUI;
 
 import org.bukkit.block.Block;
+import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.ContainerType;
 import org.getspout.spoutapi.gui.GenericContainer;
@@ -16,6 +17,7 @@ import fr.Skyforce77.SpootWifi.SpootWifi;
 import fr.Skyforce77.SpootWifi.GUI.Widgets.ChannelChangeButton;
 import fr.Skyforce77.SpootWifi.GUI.Widgets.ChannelChooseButton;
 import fr.Skyforce77.SpootWifi.GUI.Widgets.MusicChooseButton;
+import fr.Skyforce77.SpootWifi.GUI.Widgets.MusicSlider;
 
 public class MusicChooseGui extends GenericPopup {
 	
@@ -65,7 +67,7 @@ public class MusicChooseGui extends GenericPopup {
 
 		container.setAnchor(WidgetAnchor.CENTER_CENTER);
 		container.setWidth(150);
-		container.setHeight(100);
+		container.setHeight(150);
 		container.setAlign(WidgetAnchor.CENTER_CENTER);
 		container.setPriority(RenderPriority.Lowest);
 		container.setX(container.getX()-container.getWidth()/2);
@@ -74,7 +76,7 @@ public class MusicChooseGui extends GenericPopup {
 		GenericTexture texture = new GenericTexture("https://dl.dropbox.com/u/38885163/plugins/moreblocks/plugin/gui.png");
 		texture.setAnchor(WidgetAnchor.CENTER_CENTER);
 		texture.setWidth(170);
-		texture.setHeight(120);
+		texture.setHeight(170);
 		texture.setPriority(RenderPriority.High);
 		texture.setX(-texture.getWidth()/2);
 		texture.setY(-texture.getHeight()/2);
@@ -88,7 +90,12 @@ public class MusicChooseGui extends GenericPopup {
 		music.setColor(new Color(255,255,255));
 		music.setFieldColor(new Color(142,142,142));
 		
-		container.addChildren(music, new MusicChooseButton(b, music).setText("Apply Music").setPriority(RenderPriority.Low));
+		MusicSlider slider = new MusicSlider((SpoutBlock)b);
+		slider.setSliderPosition(SpootWifi.save.getChannel(b).getSWBlock(b).getStorage().getFloat("MusicPower"));
+		slider.setText(slider.getSliderPosition()+"");
+		slider.setPriority(RenderPriority.Low);
+		
+		container.addChildren(music, slider,new MusicChooseButton(b, music).setText("Apply Music").setPriority(RenderPriority.Low));
 		
 		this.attachWidgets(SpootWifi.plugin, container, texture);
 		this.setTransparent(true);

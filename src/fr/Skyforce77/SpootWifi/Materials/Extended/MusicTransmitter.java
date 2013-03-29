@@ -71,7 +71,7 @@ public class MusicTransmitter extends Transmitter{
 		if(powered && b.getCustomBlockData() == Byte.parseByte("0") && !c.getSWBlock(b).getStorage().getString("MusicValue").equals(""))
 		{
 			SpoutManager.getMaterialManager().overrideBlock(b, b.getCustomBlock(), (byte)1);
-			new MusicPacket(c.getSWBlock(b).getStorage().getString("MusicValue")).broadcast(c, new PacketOperator(b));
+			new MusicPacket(c.getSWBlock(b).getStorage().getString("MusicValue"), SpootWifi.save.getChannel(b).getSWBlock(b).getStorage().getFloat("MusicPower")).broadcast(c, new PacketOperator(b));
 		}
 		else if(!powered && b.getCustomBlockData() == Byte.parseByte("1"))
 		{

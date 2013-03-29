@@ -16,9 +16,9 @@ public class PacketManager {
 
 	protected PacketManager(){}
 	
-	MusicPacket getMusicPacket(String musicurl)
+	MusicPacket getMusicPacket(String musicurl, float volume)
 	{
-		return new MusicPacket(musicurl);
+		return new MusicPacket(musicurl, volume);
 	}
 
 	SoundEffectPacket getSoundEffectPacket(SoundEffect effect)
