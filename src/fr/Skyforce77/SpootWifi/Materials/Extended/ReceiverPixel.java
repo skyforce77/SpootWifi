@@ -24,10 +24,12 @@ public class ReceiverPixel extends Receiver{
 		if(powered && b.getCustomBlockData() == Byte.parseByte("0"))
 		{
 			SpoutManager.getMaterialManager().overrideBlock(b, b.getCustomBlock(), (byte)1);
+			b.setData((byte)0);
 		}
 		else if(!powered && b.getCustomBlockData() == Byte.parseByte("1"))
 		{
 			SpoutManager.getMaterialManager().overrideBlock(b, b.getCustomBlock(), (byte)0);
+			b.setData((byte)15);
 		}
 	}
 
