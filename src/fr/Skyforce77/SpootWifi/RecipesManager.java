@@ -39,12 +39,6 @@ public class RecipesManager {
 		.setIngredient('C', MaterialData.redstone);
 		SpoutManager.getMaterialManager().registerSpoutRecipe(fireplace);
 		
-		SpoutShapedRecipe lightningblock = new SpoutShapedRecipe(new SpoutItemStack(SpootWifi.lightningblock))
-		.shape("A","B")
-		.setIngredient('A', SpootWifi.ironstick)
-		.setIngredient('B', MaterialData.goldBlock);
-		SpoutManager.getMaterialManager().registerSpoutRecipe(lightningblock);
-		
 		SpoutShapedRecipe transmitter = new SpoutShapedRecipe(new SpoutItemStack(SpootWifi.transmitter))
 		.shape("A","B")
 		.setIngredient('A', MaterialData.redstoneTorchOn)

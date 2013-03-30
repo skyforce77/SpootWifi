@@ -11,15 +11,15 @@ import org.getspout.spoutapi.block.design.GenericCubeBlockDesign;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import fr.Skyforce77.SpootWifi.SpootWifi;
-import fr.Skyforce77.SpootWifi.GUI.MobChooseGui;
+import fr.Skyforce77.SpootWifi.GUI.EffectChooseGui;
 import fr.Skyforce77.SpootWifi.Materials.Basics.Transmitter;
 import fr.Skyforce77.SpootWifi.Saves.Channel;
-import fr.Skyforce77.SpootWifi.WifiPackets.EntityTypePacket;
+import fr.Skyforce77.SpootWifi.WifiPackets.EffectPacket;
 import fr.Skyforce77.SpootWifi.WifiPackets.Events.PacketOperator;
 
-public class MobTransmitter extends Transmitter{
+public class EffectTransmitter extends Transmitter{
 
-	public MobTransmitter(Plugin plugin, String name) {
+	public EffectTransmitter(Plugin plugin, String name) {
 		super(plugin, name, 41, getDesign(plugin,0));
 		setBlockDesign(getDesign(plugin,1), 1);
 	}
@@ -28,11 +28,11 @@ public class MobTransmitter extends Transmitter{
 	{
 		if(design == 1)
 		{
-			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{45,49,49,49,49,8});
+			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{45,49,49,49,49,53});
 		}
 		else if(design == 0)
 		{
-			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{46,50,50,50,50,9});
+			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{46,50,50,50,50,54});
 		}
 		else
 		{
@@ -47,7 +47,7 @@ public class MobTransmitter extends Transmitter{
 		SpootWifi.save.getRawChannel(b);
 		if(!player.isSneaking() && SpootWifi.canInteract(player, b))
 		{
-			new MobChooseGui(player, b);
+			new EffectChooseGui(player, b);
 			return true;
 		}
 		return super.onBlockInteract(world, x, y, z, player);
@@ -59,7 +59,7 @@ public class MobTransmitter extends Transmitter{
 		{
 			SpoutManager.getMaterialManager().overrideBlock(b, b.getCustomBlock(), (byte)1);
 			Channel c = SpootWifi.save.getChannel(b);
-			new EntityTypePacket(c.getSWBlock(b).getStorage().getString("MobType")).broadcast(c, new PacketOperator(b));
+			new EffectPacket(c.getSWBlock(b).getStorage().getString("Effect")).broadcast(c, new PacketOperator(b));
 		}
 		else if(!powered && b.getCustomBlockData() == Byte.parseByte("1"))
 		{

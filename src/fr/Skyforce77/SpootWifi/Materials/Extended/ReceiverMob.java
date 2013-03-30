@@ -14,7 +14,7 @@ import fr.Skyforce77.SpootWifi.WifiPackets.WifiPacket;
 public class ReceiverMob extends Receiver{
 	
 	public ReceiverMob(Plugin plugin, String name) {
-		super(plugin, name, org.bukkit.Material.PISTON_BASE.getId(), getDesign(plugin, 0));
+		super(plugin, name, 41, getDesign(plugin, 0));
 		setBlockDesign(getDesign(plugin, 1), 1);
 	}
 	
@@ -22,11 +22,11 @@ public class ReceiverMob extends Receiver{
 	{
 		if(design == 1)
 		{
-			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{8,8,8,8,8,8});
+			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{45,51,51,51,51,8});
 		}
 		else
 		{
-			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{9,9,9,9,9,9});
+			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{46,52,52,52,52,9});
 		}
 	}
 	

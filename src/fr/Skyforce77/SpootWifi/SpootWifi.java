@@ -32,6 +32,7 @@ import fr.Skyforce77.SpootWifi.Materials.Basics.Remote;
 import fr.Skyforce77.SpootWifi.Materials.Basics.Simple;
 import fr.Skyforce77.SpootWifi.Materials.Basics.Transmitter;
 import fr.Skyforce77.SpootWifi.Materials.Extended.ColorTransmitter;
+import fr.Skyforce77.SpootWifi.Materials.Extended.EffectTransmitter;
 import fr.Skyforce77.SpootWifi.Materials.Extended.Fireplace;
 import fr.Skyforce77.SpootWifi.Materials.Extended.FireworkTransmitter;
 import fr.Skyforce77.SpootWifi.Materials.Extended.GlobalNotificationTransmitter;
@@ -44,6 +45,7 @@ import fr.Skyforce77.SpootWifi.Materials.Extended.ReceiverColoredDiode;
 import fr.Skyforce77.SpootWifi.Materials.Extended.ReceiverColoredPixel;
 import fr.Skyforce77.SpootWifi.Materials.Extended.ReceiverDiode;
 import fr.Skyforce77.SpootWifi.Materials.Extended.ReceiverDisplay;
+import fr.Skyforce77.SpootWifi.Materials.Extended.ReceiverEffect;
 import fr.Skyforce77.SpootWifi.Materials.Extended.ReceiverFirework;
 import fr.Skyforce77.SpootWifi.Materials.Extended.ReceiverJukeBox;
 import fr.Skyforce77.SpootWifi.Materials.Extended.ReceiverMob;
@@ -78,6 +80,8 @@ public class SpootWifi extends JavaPlugin implements Listener{
 	public static CustomBlock globaltransmitternotification = null;
 	public static CustomBlock receivermob = null;
 	public static CustomBlock transmittermob = null;
+	public static CustomBlock receivereffect = null;
+	public static CustomBlock transmittereffect = null;
 	public static CustomBlock fireplace = null;
 	public static CustomBlock lightningblock = null;
 	public static CustomBlock wirelesslamp = null;
@@ -128,6 +132,8 @@ public class SpootWifi extends JavaPlugin implements Listener{
 		radio = new Radio(this, "Radio");
 		remote = new Remote(this, "Wireless Remote", RessourceManager.getTexture("remote.png"));
 		ironstick = new GenericCustomItem(this, "Iron Stick", RessourceManager.getTexture("ironstick.png"));
+		receivereffect = new ReceiverEffect(this, "Wireless Effect Receiver");
+		transmittereffect = new EffectTransmitter(this, "Wireless Effect Transmitter");
 		getServer().getPluginManager().registerEvents(this, this);
 		RecipesManager.createRecipes();
 		
