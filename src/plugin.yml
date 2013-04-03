@@ -3,6 +3,6 @@ main: fr.Skyforce77.SpootWifi.SpootWifi
 version: 0.1.4
 depend: [Spout]
 softdepend: [Spout, JukeIt]
-description:
+description: Awesome wifi plugin for Spout!
 commands:
      
