@@ -237,16 +237,6 @@ public class SpootWifi extends JavaPlugin implements Listener{
 	public void onBlockPhysics(BlockPhysicsEvent e)
 	{
 		checkPower(e.getBlock());
-		
-		SpoutBlock block = (SpoutBlock)e.getBlock();
-		
-		if(block.getCustomBlock() != null)
-		{
-			if(block.getCustomBlock() instanceof Transmitter || block.getCustomBlock() instanceof Receiver)
-			{
-				//e.setCancelled(true);
-			}
-		}
 	}
 	
 	public void checkPower(Block b)
