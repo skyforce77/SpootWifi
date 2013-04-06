@@ -1,7 +1,6 @@
 package fr.Skyforce77.SpootWifi.Materials.Basics;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -154,7 +153,7 @@ public class Receiver extends Configurable{
 		if(powered && b.getCustomBlockData() == Byte.parseByte("0"))
 		{
 			SpoutManager.getMaterialManager().overrideBlock(b, b.getCustomBlock(), (byte)1);
-			b.setType(Material.REDSTONE_TORCH_ON);
+			b.setTypeId(152);
 			b.setData((byte)5);
 		}
 		else if(!powered && b.getCustomBlockData() == Byte.parseByte("1"))

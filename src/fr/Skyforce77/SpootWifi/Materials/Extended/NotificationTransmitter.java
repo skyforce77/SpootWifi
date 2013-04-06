@@ -15,9 +15,9 @@ import fr.Skyforce77.SpootWifi.SpootWifi;
 import fr.Skyforce77.SpootWifi.GUI.NotificationChooseGui;
 import fr.Skyforce77.SpootWifi.Materials.Basics.Transmitter;
 import fr.Skyforce77.SpootWifi.Saves.Channel;
+import fr.Skyforce77.SpootWifi.Saves.MFItemStack;
 import fr.Skyforce77.SpootWifi.WifiPackets.NotificationPacket;
 import fr.Skyforce77.SpootWifi.WifiPackets.Events.PacketOperator;
-import fr.moreblocks.skyforce77.Utils.MFItemStack;
 
 public class NotificationTransmitter extends Transmitter{
 

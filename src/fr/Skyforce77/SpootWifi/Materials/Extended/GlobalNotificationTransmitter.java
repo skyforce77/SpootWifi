@@ -15,7 +15,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import fr.Skyforce77.SpootWifi.SpootWifi;
 import fr.Skyforce77.SpootWifi.GUI.GlobalNotificationChooseGui;
 import fr.Skyforce77.SpootWifi.Saves.Channel;
-import fr.moreblocks.skyforce77.Utils.MFItemStack;
+import fr.Skyforce77.SpootWifi.Saves.MFItemStack;
 
 public class GlobalNotificationTransmitter extends NotificationTransmitter{
 

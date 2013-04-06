@@ -1,7 +1,6 @@
 package fr.Skyforce77.SpootWifi.Materials.Extended;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.plugin.Plugin;
@@ -9,10 +8,7 @@ import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.block.design.BlockDesign;
 import org.getspout.spoutapi.block.design.GenericCubeBlockDesign;
-import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.player.SpoutPlayer;
-
-import com.chrischurchwell.jukeit.material.items.BurnedDisc;
 
 import fr.Skyforce77.SpootWifi.SpootWifi;
 import fr.Skyforce77.SpootWifi.GUI.MusicChooseGui;
@@ -49,7 +45,7 @@ public class MusicTransmitter extends Transmitter{
 	{
 		Block b = new Location(world,x,y,z).getBlock();
 		SpootWifi.save.getRawChannel(b);
-		SpoutItemStack sis = new SpoutItemStack(player.getItemInHand());
+		/*SpoutItemStack sis = new SpoutItemStack(player.getItemInHand());
 		if(SpootWifi.JukeIt && sis.isCustomItem() && sis.getMaterial() instanceof BurnedDisc)
 		{
 			String url = BurnedDisc.decodeDisc(player.getItemInHand());
@@ -57,7 +53,7 @@ public class MusicTransmitter extends Transmitter{
 			player.sendNotification("Music set", "", Material.RECORD_4);
 			return true;
 		}
-		else if(!player.isSneaking() && SpootWifi.canInteract(player, b))
+		else */if(!player.isSneaking() && SpootWifi.canInteract(player, b))
 		{
 			new MusicChooseGui(player, b);
 			return true;

@@ -17,6 +17,7 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.block.design.Texture;
@@ -55,9 +56,8 @@ import fr.Skyforce77.SpootWifi.Materials.Extended.WirelessSniffer;
 import fr.Skyforce77.SpootWifi.Saves.ItemSave;
 import fr.Skyforce77.SpootWifi.Saves.Save;
 import fr.Skyforce77.SpootWifi.Saves.Storage;
+import fr.Skyforce77.SpootWifi.Utils.Colors;
 import fr.Skyforce77.SpootWifi.Utils.RessourceManager;
-import fr.moreblocks.skyforce77.Main;
-import fr.moreblocks.skyforce77.Utils.Colors;
 
 public class SpootWifi extends JavaPlugin implements Listener{
 	
@@ -92,6 +92,7 @@ public class SpootWifi extends JavaPlugin implements Listener{
 	public static Texture texture = null;
 	public static Plugin plugin;
 	public static boolean JukeIt = false;
+	public static PluginManager pm;
 
 	public void onDisable()
     {
@@ -102,6 +103,7 @@ public class SpootWifi extends JavaPlugin implements Listener{
 	public void onEnable()
 	{
 		plugin = this;
+		pm = Bukkit.getPluginManager();
 		RessourceManager.LoadConfig();
 		save = Save.Deserialize(this.getDataFolder().getPath()+"/Ressources/Storage/Save.SpootWifi");
 		storage = Storage.Deserialize(this.getDataFolder().getPath()+"/Ressources/Storage/BlockStorage.SpootWifi");
@@ -137,7 +139,7 @@ public class SpootWifi extends JavaPlugin implements Listener{
 		getServer().getPluginManager().registerEvents(this, this);
 		RecipesManager.createRecipes();
 		
-		if ((Main.pm.isPluginEnabled("JukeIt"))) {
+		if ((pm.isPluginEnabled("JukeIt"))) {
 			JukeIt = true;
 			Bukkit.getLogger().info(Colors.GREEN+"[SpootWifi] "+"added compatibility with JukeIt"+Colors.RESET);
 		}

@@ -48,7 +48,7 @@ public class FireworkTransmitter extends Transmitter{
 			SpoutPlayer player) {
 		Block b = new Location(world,x,y,z).getBlock();
 		SpootWifi.save.getRawChannel(b);
-		if(player.getItemInHand().getType().equals(Material.FIREWORK))
+		if(player.getItemInHand().getType().equals(Material.getMaterial(401)))
 		{
 			FireworkMeta meta = (FireworkMeta)player.getItemInHand().getItemMeta();
 			SpootWifi.save.getChannel(b).getSWBlock(b).getStorage().addObject("FireworkMeta", new SWFireworkMeta(meta));
