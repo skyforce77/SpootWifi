@@ -54,6 +54,7 @@ import fr.Skyforce77.SpootWifi.Materials.Extended.ReceiverPixel;
 import fr.Skyforce77.SpootWifi.Materials.Extended.WirelessLamp;
 import fr.Skyforce77.SpootWifi.Materials.Extended.WirelessSniffer;
 import fr.Skyforce77.SpootWifi.Saves.ItemSave;
+import fr.Skyforce77.SpootWifi.Saves.SWStorage;
 import fr.Skyforce77.SpootWifi.Saves.Save;
 import fr.Skyforce77.SpootWifi.Saves.Storage;
 import fr.Skyforce77.SpootWifi.Utils.Colors;
@@ -161,17 +162,24 @@ public class SpootWifi extends JavaPlugin implements Listener{
 		
 		if(block.getCustomBlock() != null)
 		{
-			if(block.getCustomBlock() instanceof Transmitter)
+			if(block.getCustomBlock() instanceof Configurable)
 			{
-				save.addTransmitter(ItemSave.getChannel(e.getPlayer().getItemInHand()), block, e.getPlayer());
-				if(ItemSave.getOption(e.getPlayer().getItemInHand(), "AutoChannel") == 1)
+				if(block.getCustomBlock() instanceof Transmitter)
 				{
-					e.getPlayer().setItemInHand(ItemSave.setChannel(e.getPlayer().getItemInHand(), ItemSave.getChannel(e.getPlayer().getItemInHand())+1));
+					save.addTransmitter(ItemSave.getChannel(e.getPlayer().getItemInHand()), block, e.getPlayer());
+					save.getChannel(block).getSWBlock(block).getStorage().add(new SWStorage(ItemSave.getNBT(e.getPlayer().getItemInHand())));
 				}
-			}
-			if(block.getCustomBlock() instanceof Receiver)
-			{
-				save.addReceiver(ItemSave.getChannel(e.getPlayer().getItemInHand()), block, e.getPlayer());
+				else if(block.getCustomBlock() instanceof Receiver)
+				{
+					save.addReceiver(ItemSave.getChannel(e.getPlayer().getItemInHand()), block, e.getPlayer());
+					save.getChannel(block).getSWBlock(block).getStorage().add(new SWStorage(ItemSave.getNBT(e.getPlayer().getItemInHand())));
+				}
+				else
+				{
+					storage.addBlock(block);
+					storage.getSWBlock(block).getStorage().add(new SWStorage(ItemSave.getNBT(e.getPlayer().getItemInHand())));
+				}
+				
 				if(ItemSave.getOption(e.getPlayer().getItemInHand(), "AutoChannel") == 1)
 				{
 					e.getPlayer().setItemInHand(ItemSave.setChannel(e.getPlayer().getItemInHand(), ItemSave.getChannel(e.getPlayer().getItemInHand())+1));

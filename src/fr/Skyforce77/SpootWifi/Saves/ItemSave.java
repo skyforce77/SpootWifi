@@ -92,6 +92,18 @@ public class ItemSave {
 		return null;
 	}
 	
+	public static NBTTagCompound getNBT(ItemStack is)
+	{
+		net.minecraft.server.v1_5_R2.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
+		
+		if(nmsis.tag == null)
+		{
+			return new NBTTagCompound();
+		}
+		
+		return nmsis.tag;
+	}
+	
 	public static ItemStack setBlock(ItemStack is, Block b)
 	{
 		net.minecraft.server.v1_5_R2.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
@@ -100,7 +112,7 @@ public class ItemSave {
 		{
 			nmsis.tag = new NBTTagCompound();
 		}
-		
+
 		nmsis.tag.setInt("x", b.getX());
 		nmsis.tag.setInt("y", b.getY());
 		nmsis.tag.setInt("z", b.getZ());

@@ -1,7 +1,17 @@
 package fr.Skyforce77.SpootWifi.Saves;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import net.minecraft.server.v1_5_R2.NBTBase;
+import net.minecraft.server.v1_5_R2.NBTTagByte;
+import net.minecraft.server.v1_5_R2.NBTTagCompound;
+import net.minecraft.server.v1_5_R2.NBTTagDouble;
+import net.minecraft.server.v1_5_R2.NBTTagFloat;
+import net.minecraft.server.v1_5_R2.NBTTagInt;
+import net.minecraft.server.v1_5_R2.NBTTagLong;
+import net.minecraft.server.v1_5_R2.NBTTagString;
 
 public class SWStorage implements Serializable{
 
@@ -17,6 +27,28 @@ public class SWStorage implements Serializable{
 	private HashMap<String, SWStorage> storages = new HashMap<String, SWStorage>();
 
 	public SWStorage() {};
+	
+	public SWStorage(NBTTagCompound nbt) {
+		for(Object o : nbt.c().toArray()) {
+			NBTBase base = (NBTBase)o;
+			String s = base.getName();
+			if(base instanceof NBTTagByte) {
+				bytes.put(s, ((NBTTagByte)base).data);
+			} else if(base instanceof NBTTagString) {
+				strings.put(s, ((NBTTagString)base).data);
+			} else if(base instanceof NBTTagCompound) {
+				storages.put(s, new SWStorage((NBTTagCompound)base));
+			} else if(base instanceof NBTTagInt) {
+				integers.put(s, ((NBTTagInt)base).data);
+			} else if(base instanceof NBTTagLong) {
+				longs.put(s, ((NBTTagLong)base).data);
+			} else if(base instanceof NBTTagDouble) {
+				doubles.put(s, ((NBTTagDouble)base).data);
+			} else if(base instanceof NBTTagFloat) {
+				floats.put(s, ((NBTTagFloat)base).data);
+			}
+		}
+	};
 	
 	public void addObject(String key, Object value)
 	{
@@ -145,6 +177,35 @@ public class SWStorage implements Serializable{
 		{
 			return new SWStorage();
 		}
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public ArrayList<HashMap> getValues()
+	{
+		ArrayList<HashMap> maps = new ArrayList<HashMap>();
+		maps.add(this.bytes);
+		maps.add(this.doubles);
+		maps.add(this.floats);
+		maps.add(this.integers);
+		maps.add(this.longs);
+		maps.add(this.objects);
+		maps.add(this.storages);
+		maps.add(this.strings);
+		return maps;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void add(SWStorage storage)
+	{
+		ArrayList<HashMap> maps = storage.getValues();
+		this.bytes.putAll(maps.get(0));
+		this.doubles.putAll(maps.get(1));
+		this.floats.putAll(maps.get(2));
+		this.integers.putAll(maps.get(3));
+		this.longs.putAll(maps.get(4));
+		this.objects.putAll(maps.get(5));
+		this.storages.putAll(maps.get(6));
+		this.strings.putAll(maps.get(7));
 	}
 
 }
