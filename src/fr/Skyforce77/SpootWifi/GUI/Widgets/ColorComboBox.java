@@ -35,7 +35,7 @@ public class ColorComboBox extends GenericComboBox{
 		try
 		{
 			Channel c = SpootWifi.save.getChannel(b);
-			setSelection(items.indexOf(DyeColor.getByDyeData(c.getSWBlock(b).getStorage().getByte("WoolColor")).toString()));
+			setSelection(items.indexOf(DyeColor.getByWoolData(c.getSWBlock(b).getStorage().getByte("WoolColor")).toString()));
 		} catch(Exception e){}
 	}
 	
@@ -46,18 +46,18 @@ public class ColorComboBox extends GenericComboBox{
 			DyeColor color = DyeColor.valueOf(text);
 			if(color != null)
 			{
-				SpootWifi.save.getChannel(b).getSWBlock(b).getStorage().addByte("WoolColor", color.getDyeData());
-				p.sendNotification("Color set", text, new SpoutItemStack(35, color.getDyeData()), 2000);
+				SpootWifi.save.getChannel(b).getSWBlock(b).getStorage().addByte("WoolColor", color.getWoolData());
+				p.sendNotification("Color set", text, new SpoutItemStack(35, color.getWoolData()), 2000);
 				
 				if(((SpoutBlock)b).getCustomBlock() instanceof ColorTransmitter)
 				{
 					if(((SpoutBlock)b).getCustomBlockData() >= 16)
 					{
-						((SpoutBlock)b).setCustomBlockData((byte)(color.getDyeData()+16));
+						((SpoutBlock)b).setCustomBlockData((byte)(color.getWoolData()+16));
 					}
 					else
 					{
-						((SpoutBlock)b).setCustomBlockData(color.getDyeData());
+						((SpoutBlock)b).setCustomBlockData(color.getWoolData());
 					}
 				}
 			}
