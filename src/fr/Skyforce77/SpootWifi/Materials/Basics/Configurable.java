@@ -7,12 +7,14 @@ import org.getspout.spoutapi.block.design.BlockDesign;
 import org.getspout.spoutapi.material.block.GenericCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import fr.Skyforce77.SpootWifi.GUI.BlockItemChooseGui;
+import fr.Skyforce77.SpootWifi.GUI.ChooseGui;
+import fr.Skyforce77.SpootWifi.Saves.ItemSave;
+import fr.Skyforce77.SpootWifi.Saves.SWStorage;
 
 public class Configurable extends GenericCustomBlock{
 	
 	private boolean hasgui = true;
-	private Class<BlockItemChooseGui> gui = BlockItemChooseGui.class;
+	private Class<?> gui = ChooseGui.class;
 
 	public Configurable(Plugin plugin, String name, boolean isOpaque,
 			BlockDesign design, boolean rotate, boolean mirroredRotate,
@@ -112,7 +114,7 @@ public class Configurable extends GenericCustomBlock{
 		if(hasgui)
 		{
 			try {
-				gui.getConstructor(String.class, SpoutPlayer.class, ItemStack.class).newInstance(this.getName(), (SpoutPlayer)player, item);
+				gui.getConstructor(String.class, SpoutPlayer.class, SWStorage.class).newInstance(this.getName(), (SpoutPlayer)player, new SWStorage(ItemSave.getNBT(item)));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -127,8 +129,20 @@ public class Configurable extends GenericCustomBlock{
 		this.hasgui = gui;
 	}
 	
-	public void setGui(Class<BlockItemChooseGui> gui) {
+	public void setGui(Class<?> gui) {
 		this.gui = gui;
+	}
+	
+	public void openGui(SpoutPlayer p, SWStorage storage)
+	{
+		if(hasgui)
+		{
+			try {
+				gui.getConstructor(String.class, SpoutPlayer.class, SWStorage.class).newInstance(this.getName(), p, storage);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

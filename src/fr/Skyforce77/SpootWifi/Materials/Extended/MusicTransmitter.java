@@ -22,6 +22,7 @@ public class MusicTransmitter extends Transmitter{
 	public MusicTransmitter(Plugin plugin, String name) {
 		super(plugin, name, 42, getDesign(plugin,0));
 		setBlockDesign(getDesign(plugin,1), 1);
+		setGui(MusicChooseGui.class);
 	}
 	
 	private static BlockDesign getDesign(Plugin p,int design)
@@ -44,7 +45,6 @@ public class MusicTransmitter extends Transmitter{
 	public boolean onBlockInteract(World world, int x, int y, int z, SpoutPlayer player)
 	{
 		Block b = new Location(world,x,y,z).getBlock();
-		SpootWifi.save.getRawChannel(b);
 		/*SpoutItemStack sis = new SpoutItemStack(player.getItemInHand());
 		if(SpootWifi.JukeIt && sis.isCustomItem() && sis.getMaterial() instanceof BurnedDisc)
 		{
@@ -55,7 +55,7 @@ public class MusicTransmitter extends Transmitter{
 		}
 		else */if(!player.isSneaking() && SpootWifi.canInteract(player, b))
 		{
-			new MusicChooseGui(player, b);
+			openGui(player, SpootWifi.save.getChannel(b).getSWBlock(b).getStorage());
 			return true;
 		}
 		return super.onBlockInteract(world, x, y, z, player);

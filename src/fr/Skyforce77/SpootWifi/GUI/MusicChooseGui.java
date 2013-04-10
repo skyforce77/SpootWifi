@@ -1,12 +1,9 @@
 package fr.Skyforce77.SpootWifi.GUI;
 
-import org.bukkit.block.Block;
-import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.ContainerType;
 import org.getspout.spoutapi.gui.GenericContainer;
 import org.getspout.spoutapi.gui.GenericLabel;
-import org.getspout.spoutapi.gui.GenericPopup;
 import org.getspout.spoutapi.gui.GenericTextField;
 import org.getspout.spoutapi.gui.GenericTexture;
 import org.getspout.spoutapi.gui.RenderPriority;
@@ -18,21 +15,22 @@ import fr.Skyforce77.SpootWifi.GUI.Widgets.ChannelChangeButton;
 import fr.Skyforce77.SpootWifi.GUI.Widgets.ChannelChooseButton;
 import fr.Skyforce77.SpootWifi.GUI.Widgets.MusicChooseButton;
 import fr.Skyforce77.SpootWifi.GUI.Widgets.MusicSlider;
+import fr.Skyforce77.SpootWifi.Saves.SWStorage;
 
-public class MusicChooseGui extends GenericPopup {
+public class MusicChooseGui extends SWGui {
 	
-	public MusicChooseGui(SpoutPlayer sp, Block b)
+	public MusicChooseGui(String title, SpoutPlayer sp, SWStorage storage)
 	{
-		
+		super(title,sp,storage);
 		GenericContainer container = new GenericContainer();
 		container.setLayout(ContainerType.VERTICAL);
 		
 		GenericLabel label = new GenericLabel();
-		if(SpootWifi.getOwner(b).equals("???"))
+		if(SpootWifi.getOwner(storage).equals("???"))
 		{
-			SpootWifi.setOwner(b, sp.getName());
+			SpootWifi.setOwner(storage, sp.getName());
 		}
-		label.setText("Owner: "+SpootWifi.getOwner(b));
+		label.setText("Owner: "+SpootWifi.getOwner(storage));
 		container.addChild(label);
 		
 		GenericContainer fieldc = new GenericContainer();
@@ -43,7 +41,7 @@ public class MusicChooseGui extends GenericPopup {
 		
 		GenericTextField field = new GenericTextField();
 		field.setTooltip("Channel");
-		field.setText(""+SpootWifi.save.getRawChannel(b));
+		field.setText(""+storage.getInteger("SpootWifiChannel"));
 		field.setMaximumCharacters(9);
 		field.setPlaceholder("0123456789");
 		field.setBorderColor(new Color(120,120,120));
@@ -62,7 +60,7 @@ public class MusicChooseGui extends GenericPopup {
 		fieldc.addChildren(mdix,field,pdix);
 		container.addChild(fieldc);
 		
-		applyc.addChildren(mcent, new ChannelChooseButton(b, field).setText("Apply"), pcent);
+		applyc.addChildren(mcent, new ChannelChooseButton(storage, field).setText("Apply"), pcent);
 		container.addChild(applyc);
 
 		container.setAnchor(WidgetAnchor.CENTER_CENTER);
@@ -83,19 +81,19 @@ public class MusicChooseGui extends GenericPopup {
 		
 		GenericTextField music = new GenericTextField();
 		music.setTooltip("Music url");
-		music.setText(SpootWifi.save.getChannel(b).getSWBlock(b).getStorage().getString("MusicValue"));
+		music.setText(storage.getString("MusicValue"));
 		music.setMaximumCharacters(900);
 		music.setMaximumLines(900);
 		music.setBorderColor(new Color(120,120,120));
 		music.setColor(new Color(255,255,255));
 		music.setFieldColor(new Color(142,142,142));
 		
-		MusicSlider slider = new MusicSlider((SpoutBlock)b);
-		slider.setSliderPosition(SpootWifi.save.getChannel(b).getSWBlock(b).getStorage().getFloat("MusicPower"));
+		MusicSlider slider = new MusicSlider(sp, storage);
+		slider.setSliderPosition(storage.getFloat("MusicPower"));
 		slider.setText("Volume: "+((int)(slider.getSliderPosition()*100))+"%");
 		slider.setPriority(RenderPriority.Low);
 		
-		container.addChildren(music, slider,new MusicChooseButton(b, music).setText("Apply Music").setPriority(RenderPriority.Low));
+		container.addChildren(music, slider,new MusicChooseButton(sp, storage, music).setText("Apply Music").setPriority(RenderPriority.Low));
 		
 		this.attachWidgets(SpootWifi.plugin, container, texture);
 		this.setTransparent(true);

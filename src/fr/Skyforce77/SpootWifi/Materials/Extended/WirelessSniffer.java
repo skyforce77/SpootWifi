@@ -6,9 +6,10 @@ import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import fr.Skyforce77.SpootWifi.SpootWifi;
-import fr.Skyforce77.SpootWifi.GUI.ItemChooseGui;
+import fr.Skyforce77.SpootWifi.GUI.ChooseGui;
 import fr.Skyforce77.SpootWifi.Materials.Basics.ItemReceiver;
 import fr.Skyforce77.SpootWifi.Saves.ItemSave;
+import fr.Skyforce77.SpootWifi.Saves.SWStorage;
 import fr.Skyforce77.SpootWifi.Utils.RessourceManager;
 
 public class WirelessSniffer extends ItemReceiver{
@@ -22,7 +23,7 @@ public class WirelessSniffer extends ItemReceiver{
 			BlockFace face) {
 		if(player.isSneaking())
 		{
-			new ItemChooseGui(this.getName(), player, player.getItemInHand());
+			new ChooseGui(this.getName(), player, new SWStorage(ItemSave.getNBT(player.getItemInHand())));
 		}
 		else
 		{

@@ -5,21 +5,19 @@ import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.getspout.spoutapi.gui.GenericComboBox;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import fr.Skyforce77.SpootWifi.SpootWifi;
-import fr.Skyforce77.SpootWifi.Saves.Channel;
+import fr.Skyforce77.SpootWifi.Saves.SWStorage;
 
 public class EffectComboBox extends GenericComboBox{
 
-	Block b;
+	SWStorage storage;
 	SpoutPlayer p;
 	
-	public EffectComboBox(Block b, SpoutPlayer p)
+	public EffectComboBox(SWStorage storage, SpoutPlayer p)
 	{
-		this.b = b;
+		this.storage = storage;
 		this.p = p;
 		
 		ArrayList<String> items = new ArrayList<String>();
@@ -31,8 +29,7 @@ public class EffectComboBox extends GenericComboBox{
 		
 		try
 		{
-			Channel c = SpootWifi.save.getChannel(b);
-			setSelection(items.indexOf(c.getSWBlock(b).getStorage().getString("Effect")));
+			setSelection(items.indexOf(storage.getString("Effect")));
 		} catch(Exception e){}
 	}
 	
@@ -43,8 +40,10 @@ public class EffectComboBox extends GenericComboBox{
 			Effect effect = Effect.valueOf(text);
 			if(effect != null)
 			{
-				SpootWifi.save.getChannel(b).getSWBlock(b).getStorage().addString("Effect", effect.toString());
+				storage.addString("Effect", effect.toString());
 				p.sendNotification("Effect set", text, Material.REDSTONE);
+				
+				storage.sync(p);
 			}
 			else
 			{

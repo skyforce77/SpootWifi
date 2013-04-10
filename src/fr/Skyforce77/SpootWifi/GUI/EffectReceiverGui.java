@@ -1,11 +1,9 @@
 package fr.Skyforce77.SpootWifi.GUI;
 
-import org.bukkit.block.Block;
 import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.ContainerType;
 import org.getspout.spoutapi.gui.GenericContainer;
 import org.getspout.spoutapi.gui.GenericLabel;
-import org.getspout.spoutapi.gui.GenericPopup;
 import org.getspout.spoutapi.gui.GenericTextField;
 import org.getspout.spoutapi.gui.GenericTexture;
 import org.getspout.spoutapi.gui.RenderPriority;
@@ -16,21 +14,22 @@ import fr.Skyforce77.SpootWifi.SpootWifi;
 import fr.Skyforce77.SpootWifi.GUI.Widgets.ChannelChangeButton;
 import fr.Skyforce77.SpootWifi.GUI.Widgets.ChannelChooseButton;
 import fr.Skyforce77.SpootWifi.GUI.Widgets.EffectReceiverButton;
+import fr.Skyforce77.SpootWifi.Saves.SWStorage;
 
-public class EffectReceiverGui extends GenericPopup {
+public class EffectReceiverGui extends SWGui {
 	
-	public EffectReceiverGui(SpoutPlayer sp, Block b)
+	public EffectReceiverGui(String title, SpoutPlayer sp, SWStorage storage)
 	{
-		
+		super(title,sp,storage);
 		GenericContainer container = new GenericContainer();
 		container.setLayout(ContainerType.VERTICAL);
 		
 		GenericLabel label = new GenericLabel();
-		if(SpootWifi.getOwner(b).equals("???"))
+		if(SpootWifi.getOwner(storage).equals("???"))
 		{
-			SpootWifi.setOwner(b, sp.getName());
+			SpootWifi.setOwner(storage, sp.getName());
 		}
-		label.setText("Owner: "+SpootWifi.getOwner(b));
+		label.setText("Owner: "+SpootWifi.getOwner(storage));
 		container.addChild(label);
 		
 		GenericContainer fieldc = new GenericContainer();
@@ -41,7 +40,7 @@ public class EffectReceiverGui extends GenericPopup {
 		
 		GenericTextField field = new GenericTextField();
 		field.setTooltip("Channel");
-		field.setText(""+SpootWifi.save.getRawChannel(b));
+		field.setText(""+storage.getInteger("SpootWifiChannel"));
 		field.setMaximumCharacters(9);
 		field.setPlaceholder("0123456789");
 		field.setBorderColor(new Color(120,120,120));
@@ -60,7 +59,7 @@ public class EffectReceiverGui extends GenericPopup {
 		fieldc.addChildren(mdix,field,pdix);
 		container.addChild(fieldc);
 		
-		applyc.addChildren(mcent, new ChannelChooseButton(b, field).setText("Apply"), pcent);
+		applyc.addChildren(mcent, new ChannelChooseButton(storage, field).setText("Apply"), pcent);
 		container.addChild(applyc);
 
 		container.setAnchor(WidgetAnchor.CENTER_CENTER);
@@ -81,7 +80,7 @@ public class EffectReceiverGui extends GenericPopup {
 		
 		GenericTextField x = new GenericTextField();
 		x.setTooltip("X");
-		x.setText(SpootWifi.save.getChannel(b).getSWBlock(b).getStorage().getInteger("x")+"");
+		x.setText(storage.getInteger("x")+"");
 		x.setMaximumCharacters(26);
 		x.setMaximumLines(1);
 		x.setBorderColor(new Color(120,120,120));
@@ -90,7 +89,7 @@ public class EffectReceiverGui extends GenericPopup {
 		
 		GenericTextField y = new GenericTextField();
 		y.setTooltip("Y");
-		y.setText(SpootWifi.save.getChannel(b).getSWBlock(b).getStorage().getInteger("y")+"");
+		y.setText(storage.getInteger("y")+"");
 		y.setMaximumCharacters(26);
 		y.setMaximumLines(1);
 		y.setBorderColor(new Color(120,120,120));
@@ -99,7 +98,7 @@ public class EffectReceiverGui extends GenericPopup {
 		
 		GenericTextField z = new GenericTextField();
 		z.setTooltip("Z");
-		z.setText(SpootWifi.save.getChannel(b).getSWBlock(b).getStorage().getInteger("z")+"");
+		z.setText(storage.getInteger("z")+"");
 		z.setMaximumCharacters(26);
 		z.setMaximumLines(1);
 		z.setBorderColor(new Color(120,120,120));
@@ -108,14 +107,14 @@ public class EffectReceiverGui extends GenericPopup {
 		
 		GenericTextField data = new GenericTextField();
 		data.setTooltip("Data");
-		data.setText(SpootWifi.save.getChannel(b).getSWBlock(b).getStorage().getInteger("data")+"");
+		data.setText(storage.getInteger("data")+"");
 		data.setMaximumCharacters(26);
 		data.setMaximumLines(1);
 		data.setBorderColor(new Color(120,120,120));
 		data.setColor(new Color(255,255,255));
 		data.setFieldColor(new Color(142,142,142));
 		
-		container.addChildren(x,y,z,data, new EffectReceiverButton(b, x,y,z,data).setText("Apply Location").setPriority(RenderPriority.Low));
+		container.addChildren(x,y,z,data, new EffectReceiverButton(sp, storage, x,y,z,data).setText("Apply Location").setPriority(RenderPriority.Low));
 		
 		this.attachWidgets(SpootWifi.plugin, container, texture);
 		this.setTransparent(true);

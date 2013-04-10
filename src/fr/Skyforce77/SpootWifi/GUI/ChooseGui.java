@@ -1,11 +1,9 @@
 package fr.Skyforce77.SpootWifi.GUI;
 
-import org.bukkit.block.Block;
 import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.ContainerType;
 import org.getspout.spoutapi.gui.GenericContainer;
 import org.getspout.spoutapi.gui.GenericLabel;
-import org.getspout.spoutapi.gui.GenericPopup;
 import org.getspout.spoutapi.gui.GenericTextField;
 import org.getspout.spoutapi.gui.GenericTexture;
 import org.getspout.spoutapi.gui.RenderPriority;
@@ -15,21 +13,22 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import fr.Skyforce77.SpootWifi.SpootWifi;
 import fr.Skyforce77.SpootWifi.GUI.Widgets.ChannelChangeButton;
 import fr.Skyforce77.SpootWifi.GUI.Widgets.ChannelChooseButton;
+import fr.Skyforce77.SpootWifi.Saves.SWStorage;
 
-public class ChooseGui extends GenericPopup {
+public class ChooseGui extends SWGui {
 	
-	public ChooseGui(SpoutPlayer sp, Block b)
+	public ChooseGui(String title, SpoutPlayer sp, SWStorage storage)
 	{
-		
+		super(title,sp,storage);
 		GenericContainer container = new GenericContainer();
 		container.setLayout(ContainerType.VERTICAL);
 		
 		GenericLabel label = new GenericLabel();
-		if(SpootWifi.getOwner(b).equals("???"))
+		if(SpootWifi.getOwner(storage).equals("???"))
 		{
-			SpootWifi.setOwner(b, sp.getName());
+			SpootWifi.setOwner(storage, sp.getName());
 		}
-		label.setText("Owner: "+SpootWifi.getOwner(b));
+		label.setText("Owner: "+SpootWifi.getOwner(storage));
 		container.addChild(label);
 		
 		GenericContainer fieldc = new GenericContainer();
@@ -40,7 +39,7 @@ public class ChooseGui extends GenericPopup {
 		
 		GenericTextField field = new GenericTextField();
 		field.setTooltip("Channel");
-		field.setText(""+SpootWifi.save.getRawChannel(b));
+		field.setText(""+storage.getInteger("SpootWifiChannel"));
 		field.setMaximumCharacters(9);
 		field.setPlaceholder("0123456789");
 		field.setBorderColor(new Color(120,120,120));
@@ -59,7 +58,7 @@ public class ChooseGui extends GenericPopup {
 		fieldc.addChildren(mdix,field,pdix);
 		container.addChild(fieldc);
 		
-		applyc.addChildren(mcent, new ChannelChooseButton(b, field).setText("Apply"), pcent);
+		applyc.addChildren(mcent, new ChannelChooseButton(storage, field).setText("Apply"), pcent);
 		container.addChild(applyc);
 
 		container.setAnchor(WidgetAnchor.CENTER_CENTER);

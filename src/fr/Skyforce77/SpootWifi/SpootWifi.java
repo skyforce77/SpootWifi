@@ -351,6 +351,24 @@ public class SpootWifi extends JavaPlugin implements Listener{
 		}
 	}
 	
+	public static String getOwner(SWStorage storage)
+	{
+		if(!storage.getString("OwnerName").equals(""))
+		{
+			String owner = storage.getString("OwnerName");
+			return owner;
+		}
+		else
+		{
+			return "???";
+		}
+	}
+	
+	public static void setOwner(SWStorage storage, String name)
+	{
+		storage.addString("OwnerName", name);
+	}
+	
 	@EventHandler
 	public void onConfigurableInteract(PlayerInteractEvent e)
 	{

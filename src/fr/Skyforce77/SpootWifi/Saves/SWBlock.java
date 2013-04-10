@@ -14,7 +14,7 @@ public class SWBlock implements Serializable{
 	private int x;
 	private int y;
 	private int z;
-	private SWStorage storage = new SWStorage();
+	private SWStorage storage;
 	
 	public SWBlock(Block b)
 	{
@@ -22,17 +22,7 @@ public class SWBlock implements Serializable{
 		x = b.getX();
 		y = b.getY();
 		z = b.getZ();
-	}
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((world == null) ? 0 : world.hashCode());
-		result = prime * result + x;
-		result = prime * result + y;
-		result = prime * result + z;
-		return result;
+		storage = new SWStorage(b);
 	}
 
 	@Override
@@ -60,19 +50,17 @@ public class SWBlock implements Serializable{
 
 	public Block getBlock()
 	{
-		if(Bukkit.getWorld(world) != null)
-		{
-			return new Location(Bukkit.getWorld(world), x,y,z).getBlock();
-		}
-		else
-		{
-			return null;
-		}
+		return new Location(Bukkit.getWorld(world), x,y,z).getBlock();
 	}
 	
 	public SWStorage getStorage()
 	{
 		return this.storage;
+	}
+	
+	public void addStorage(SWStorage storage)
+	{
+		this.storage.add(storage);
 	}
 
 }

@@ -10,11 +10,12 @@ import fr.Skyforce77.SpootWifi.WifiPackets.Events.PacketSendEvent;
 
 public class WifiPacket {
 
-	private SWStorage storage = new SWStorage();
+	private SWStorage storage;
 	private String type;
 	
 	public WifiPacket(String type)
 	{
+		this.storage = new SWStorage(this);
 		this.type = type;
 	}
 	

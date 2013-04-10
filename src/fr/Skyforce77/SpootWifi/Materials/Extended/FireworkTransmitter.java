@@ -13,7 +13,6 @@ import org.getspout.spoutapi.block.design.GenericCubeBlockDesign;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import fr.Skyforce77.SpootWifi.SpootWifi;
-import fr.Skyforce77.SpootWifi.GUI.ChooseGui;
 import fr.Skyforce77.SpootWifi.Materials.Basics.Transmitter;
 import fr.Skyforce77.SpootWifi.Saves.Channel;
 import fr.Skyforce77.SpootWifi.Saves.SWFireworkMeta;
@@ -47,7 +46,6 @@ public class FireworkTransmitter extends Transmitter{
 	public boolean onBlockInteract(World world, int x, int y, int z,
 			SpoutPlayer player) {
 		Block b = new Location(world,x,y,z).getBlock();
-		SpootWifi.save.getRawChannel(b);
 		if(player.getItemInHand().getType().equals(Material.getMaterial(401)))
 		{
 			FireworkMeta meta = (FireworkMeta)player.getItemInHand().getItemMeta();
@@ -57,7 +55,7 @@ public class FireworkTransmitter extends Transmitter{
 		}
 		else if(!player.isSneaking() && SpootWifi.canInteract(player, b))
 		{
-			new ChooseGui(player, b);
+			openGui(player, SpootWifi.save.getChannel(b).getSWBlock(b).getStorage());
 			return true;
 		}
 		return true;

@@ -1,11 +1,9 @@
 package fr.Skyforce77.SpootWifi.GUI;
 
-import org.bukkit.block.Block;
 import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.ContainerType;
 import org.getspout.spoutapi.gui.GenericContainer;
 import org.getspout.spoutapi.gui.GenericLabel;
-import org.getspout.spoutapi.gui.GenericPopup;
 import org.getspout.spoutapi.gui.GenericTextField;
 import org.getspout.spoutapi.gui.GenericTexture;
 import org.getspout.spoutapi.gui.RenderPriority;
@@ -14,21 +12,22 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import fr.Skyforce77.SpootWifi.SpootWifi;
 import fr.Skyforce77.SpootWifi.GUI.Widgets.NotificationChooseButton;
+import fr.Skyforce77.SpootWifi.Saves.SWStorage;
 
-public class GlobalNotificationChooseGui extends GenericPopup {
+public class GlobalNotificationChooseGui extends SWGui {
 	
-	public GlobalNotificationChooseGui(SpoutPlayer sp, Block b)
+	public GlobalNotificationChooseGui(String title, SpoutPlayer sp, SWStorage storage)
 	{
-		
+		super(title,sp,storage);
 		GenericContainer container = new GenericContainer();
 		container.setLayout(ContainerType.VERTICAL);
 		
 		GenericLabel label = new GenericLabel();
-		if(SpootWifi.getOwner(b).equals("???"))
+		if(SpootWifi.getOwner(storage).equals("???"))
 		{
-			SpootWifi.setOwner(b, sp.getName());
+			SpootWifi.setOwner(storage, sp.getName());
 		}
-		label.setText("Owner: "+SpootWifi.getOwner(b));
+		label.setText("Owner: "+SpootWifi.getOwner(storage));
 		container.addChild(label);
 
 		container.setAnchor(WidgetAnchor.CENTER_CENTER);
@@ -47,25 +46,25 @@ public class GlobalNotificationChooseGui extends GenericPopup {
 		texture.setX(-texture.getWidth()/2);
 		texture.setY(-texture.getHeight()/2);
 		
-		GenericTextField title = new GenericTextField();
-		title.setTooltip("Title");
-		title.setText(SpootWifi.save.getChannel(b).getSWBlock(b).getStorage().getString("title"));
-		title.setMaximumCharacters(26);
-		title.setMaximumLines(1);
-		title.setBorderColor(new Color(120,120,120));
-		title.setColor(new Color(255,255,255));
-		title.setFieldColor(new Color(142,142,142));
+		GenericTextField titles = new GenericTextField();
+		titles.setTooltip("Title");
+		titles.setText(storage.getString("title"));
+		titles.setMaximumCharacters(26);
+		titles.setMaximumLines(1);
+		titles.setBorderColor(new Color(120,120,120));
+		titles.setColor(new Color(255,255,255));
+		titles.setFieldColor(new Color(142,142,142));
 		
 		GenericTextField text = new GenericTextField();
 		text.setTooltip("Text");
-		text.setText(SpootWifi.save.getChannel(b).getSWBlock(b).getStorage().getString("text"));
+		text.setText(storage.getString("text"));
 		text.setMaximumCharacters(26);
 		text.setMaximumLines(1);
 		text.setBorderColor(new Color(120,120,120));
 		text.setColor(new Color(255,255,255));
 		text.setFieldColor(new Color(142,142,142));
 		
-		container.addChildren(title, text, new NotificationChooseButton(b, title, text).setText("Apply Text and Title").setPriority(RenderPriority.Low));
+		container.addChildren(titles, text, new NotificationChooseButton(sp, storage, titles, text).setText("Apply Text and Title").setPriority(RenderPriority.Low));
 		
 		this.attachWidgets(SpootWifi.plugin, container, texture);
 		this.setTransparent(true);

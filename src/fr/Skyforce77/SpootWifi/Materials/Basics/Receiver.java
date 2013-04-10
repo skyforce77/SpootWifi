@@ -142,7 +142,7 @@ public class Receiver extends Configurable{
 		SpootWifi.save.getRawChannel(b);
 		if(!player.isSneaking() && SpootWifi.canInteract(player, b))
 		{
-			new ChooseGui(player, b);
+			new ChooseGui(this.getName(), player, SpootWifi.save.getChannel(b).getSWBlock(b).getStorage());
 			return true;
 		}
 		return super.onBlockInteract(world, x, y, z, player);

@@ -103,6 +103,13 @@ public class ItemSave {
 		
 		return nmsis.tag;
 	}
+
+	public static ItemStack setNBT(ItemStack is, SWStorage storage)
+	{
+		net.minecraft.server.v1_5_R2.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
+		nmsis.tag = storage.toNBT();
+		return CraftItemStack.asCraftMirror(nmsis);
+	}
 	
 	public static ItemStack setBlock(ItemStack is, Block b)
 	{

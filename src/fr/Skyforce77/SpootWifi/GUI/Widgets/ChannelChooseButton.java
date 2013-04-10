@@ -2,27 +2,22 @@ package fr.Skyforce77.SpootWifi.GUI.Widgets;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.getspout.spoutapi.event.screen.ButtonClickEvent;
 import org.getspout.spoutapi.gui.GenericButton;
 import org.getspout.spoutapi.gui.GenericTextField;
 
 import fr.Skyforce77.SpootWifi.SpootWifi;
 import fr.Skyforce77.SpootWifi.Saves.ItemSave;
+import fr.Skyforce77.SpootWifi.Saves.SWStorage;
 
 public class ChannelChooseButton extends GenericButton{
 
-	Block b = null;
+	SWStorage storage = null;
 	GenericTextField field;
 	
-	public ChannelChooseButton(Block b, GenericTextField field)
+	public ChannelChooseButton(SWStorage storage, GenericTextField field)
 	{
-		this.b = b;
-		this.field = field;
-	}
-	
-	public ChannelChooseButton(GenericTextField field)
-	{
+		this.storage = storage;
 		this.field = field;
 	}
 	
@@ -32,9 +27,9 @@ public class ChannelChooseButton extends GenericButton{
 		try
 		{
 			Integer i = Integer.parseInt(field.getText());
-			if(b != null)
+			if(storage.isBlockStorage())
 			{
-				SpootWifi.save.changeChannel(b, i);
+				SpootWifi.save.changeChannel(storage.getBlock(), i);
 				event.getPlayer().sendNotification("Channel set", ""+i, Material.COMPASS);
 			}
 			else

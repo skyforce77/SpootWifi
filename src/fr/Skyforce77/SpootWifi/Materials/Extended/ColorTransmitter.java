@@ -52,6 +52,7 @@ public class ColorTransmitter extends Transmitter{
 		setBlockDesign(getDesign(plugin,13,true), 29);
 		setBlockDesign(getDesign(plugin,14,true), 30);
 		setBlockDesign(getDesign(plugin,15,true), 31);
+		setGui(ColorChooseGui.class);
 	}
 	
 	private static BlockDesign getDesign(Plugin p,int design, boolean powered)
@@ -70,10 +71,9 @@ public class ColorTransmitter extends Transmitter{
 	public boolean onBlockInteract(World world, int x, int y, int z,
 			SpoutPlayer player) {
 		Block b = new Location(world,x,y,z).getBlock();
-		SpootWifi.save.getRawChannel(b);
 		if(!player.isSneaking() && SpootWifi.canInteract(player, b))
 		{
-			new ColorChooseGui(player, b);
+			openGui(player, SpootWifi.save.getChannel(b).getSWBlock(b).getStorage());
 			return true;
 		}
 		return super.onBlockInteract(world, x, y, z, player);

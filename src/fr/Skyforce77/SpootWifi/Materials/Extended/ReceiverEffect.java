@@ -21,6 +21,7 @@ public class ReceiverEffect extends Receiver{
 	public ReceiverEffect(Plugin plugin, String name) {
 		super(plugin, name, 41, getDesign(plugin, 0));
 		setBlockDesign(getDesign(plugin, 1), 1);
+		setGui(EffectReceiverGui.class);
 	}
 	
 	private static BlockDesign getDesign(Plugin p, int design)
@@ -55,10 +56,9 @@ public class ReceiverEffect extends Receiver{
 	public boolean onBlockInteract(World world, int x, int y, int z,
 			SpoutPlayer player) {
 		Block b = new Location(world,x,y,z).getBlock();
-		SpootWifi.save.getRawChannel(b);
 		if(!player.isSneaking() && SpootWifi.canInteract(player, b))
 		{
-			new EffectReceiverGui(player, b);
+			openGui(player, SpootWifi.save.getChannel(b).getSWBlock(b).getStorage());
 			return true;
 		}
 		return false;

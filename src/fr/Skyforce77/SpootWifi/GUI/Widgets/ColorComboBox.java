@@ -5,24 +5,22 @@ import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.gui.GenericComboBox;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import fr.Skyforce77.SpootWifi.SpootWifi;
 import fr.Skyforce77.SpootWifi.Materials.Extended.ColorTransmitter;
-import fr.Skyforce77.SpootWifi.Saves.Channel;
+import fr.Skyforce77.SpootWifi.Saves.SWStorage;
 
 public class ColorComboBox extends GenericComboBox{
 
-	Block b;
+	SWStorage storage;
 	SpoutPlayer p;
 	
-	public ColorComboBox(Block b, SpoutPlayer p)
+	public ColorComboBox(SWStorage storage, SpoutPlayer p)
 	{
-		this.b = b;
+		this.storage = storage;
 		this.p = p;
 		
 		ArrayList<String> items = new ArrayList<String>();
@@ -34,8 +32,7 @@ public class ColorComboBox extends GenericComboBox{
 		
 		try
 		{
-			Channel c = SpootWifi.save.getChannel(b);
-			setSelection(items.indexOf(DyeColor.getByWoolData(c.getSWBlock(b).getStorage().getByte("WoolColor")).toString()));
+			setSelection(items.indexOf(DyeColor.getByWoolData(storage.getByte("WoolColor")).toString()));
 		} catch(Exception e){}
 	}
 	
@@ -46,20 +43,23 @@ public class ColorComboBox extends GenericComboBox{
 			DyeColor color = DyeColor.valueOf(text);
 			if(color != null)
 			{
-				SpootWifi.save.getChannel(b).getSWBlock(b).getStorage().addByte("WoolColor", color.getWoolData());
+				storage.addByte("WoolColor", color.getWoolData());
 				p.sendNotification("Color set", text, new SpoutItemStack(35, color.getWoolData()), 2000);
 				
-				if(((SpoutBlock)b).getCustomBlock() instanceof ColorTransmitter)
+				if(storage.isBlockStorage() && ((SpoutBlock)storage.getBlock()) instanceof ColorTransmitter)
 				{
-					if(((SpoutBlock)b).getCustomBlockData() >= 16)
+					SpoutBlock sb = ((SpoutBlock)storage.getBlock());
+					if(sb.getCustomBlockData() >= 16)
 					{
-						((SpoutBlock)b).setCustomBlockData((byte)(color.getWoolData()+16));
+						sb.setCustomBlockData((byte)(color.getWoolData()+16));
 					}
 					else
 					{
-						((SpoutBlock)b).setCustomBlockData(color.getWoolData());
+						sb.setCustomBlockData(color.getWoolData());
 					}
 				}
+				
+				storage.sync(p);
 			}
 			else
 			{

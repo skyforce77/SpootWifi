@@ -4,6 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+
+import fr.Skyforce77.SpootWifi.SpootWifi;
+import fr.Skyforce77.SpootWifi.WifiPackets.WifiPacket;
+
 import net.minecraft.server.v1_5_R2.NBTBase;
 import net.minecraft.server.v1_5_R2.NBTTagByte;
 import net.minecraft.server.v1_5_R2.NBTTagCompound;
@@ -26,9 +34,19 @@ public class SWStorage implements Serializable{
 	private HashMap<String, Byte> bytes = new HashMap<String, Byte>();
 	private HashMap<String, SWStorage> storages = new HashMap<String, SWStorage>();
 
-	public SWStorage() {};
+	public SWStorage(WifiPacket packet) {}
+		
+	public SWStorage(Block b) {
+		Location loc = b.getLocation();
+		integers.put("type",0);
+		doubles.put("x", loc.getX());
+		doubles.put("y", loc.getY());
+		doubles.put("z", loc.getZ());
+		strings.put("world", b.getWorld().getName());
+	};
 	
 	public SWStorage(NBTTagCompound nbt) {
+		integers.put("type",1);
 		for(Object o : nbt.c().toArray()) {
 			NBTBase base = (NBTBase)o;
 			String s = base.getName();
@@ -175,8 +193,20 @@ public class SWStorage implements Serializable{
 		}
 		else
 		{
-			return new SWStorage();
+			return null;
 		}
+	}
+	
+	public boolean isBlockStorage()
+	{
+		return getInteger("type") == 0;
+	}
+	
+	public Block getBlock()
+	{
+		Location loc = new Location(Bukkit.getWorld(getString("world")), getDouble("x"), getDouble("y"), getDouble("z"));
+		System.out.println(getString("world")); System.out.println(getDouble("x")); System.out.println(getDouble("y")); System.out.println(getDouble("z"));
+		return loc.getBlock();
 	}
 	
 	@SuppressWarnings("rawtypes")
@@ -206,6 +236,58 @@ public class SWStorage implements Serializable{
 		this.objects.putAll(maps.get(5));
 		this.storages.putAll(maps.get(6));
 		this.strings.putAll(maps.get(7));
+	}
+	
+	public NBTTagCompound toNBT() {
+		NBTTagCompound tag = new NBTTagCompound();
+		
+		for(String s : this.bytes.keySet()) {
+			tag.setByte(s, this.bytes.get(s));
+		}
+		for(String s : this.doubles.keySet()) {
+			tag.setDouble(s, this.doubles.get(s));
+		}
+		for(String s : this.floats.keySet()) {
+			tag.setFloat(s, this.floats.get(s));
+		}
+		for(String s : this.integers.keySet()) {
+			tag.setInt(s, this.integers.get(s));
+		}
+		for(String s : this.longs.keySet()) {
+			tag.setLong(s, this.longs.get(s));
+		}
+		for(String s : this.objects.keySet()) {
+			if(this.objects.get(s) instanceof NBTBase)
+			tag.set(s, (NBTBase)this.objects.get(s));
+		}
+		for(String s : this.storages.keySet()) {
+			tag.set(s, this.storages.get(s).toNBT());
+		}
+		for(String s : this.strings.keySet()) {
+			tag.setString(s, this.strings.get(s));
+		}
+		
+		return tag;
+
+	}
+	
+	public void sync(Player p)
+	{
+		if(isBlockStorage())
+		{
+			if(SpootWifi.save.hasChannel(getBlock()))
+			{
+				SpootWifi.save.getChannel(getBlock()).getSWBlock(getBlock()).addStorage(this);
+			}
+			else if(SpootWifi.storage.hasBlock(getBlock()))
+			{
+				SpootWifi.storage.getSWBlock(getBlock()).addStorage(this);
+			}
+		}
+		else
+		{
+			p.setItemInHand(ItemSave.setNBT(p.getItemInHand(), this));
+		}
 	}
 
 }

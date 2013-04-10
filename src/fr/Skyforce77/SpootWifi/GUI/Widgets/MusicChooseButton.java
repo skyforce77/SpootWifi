@@ -2,21 +2,23 @@ package fr.Skyforce77.SpootWifi.GUI.Widgets;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.getspout.spoutapi.event.screen.ButtonClickEvent;
 import org.getspout.spoutapi.gui.GenericButton;
 import org.getspout.spoutapi.gui.GenericTextField;
 
-import fr.Skyforce77.SpootWifi.SpootWifi;
+import fr.Skyforce77.SpootWifi.Saves.SWStorage;
 
 public class MusicChooseButton extends GenericButton{
 
-	Block b;
+	SWStorage storage;
+	Player p;
 	GenericTextField music;
 	
-	public MusicChooseButton(Block b, GenericTextField music)
+	public MusicChooseButton(Player p, SWStorage storage, GenericTextField music)
 	{
-		this.b = b;
+		this.p = p;
+		this.storage = storage;
 		this.music = music;
 	}
 	
@@ -25,8 +27,10 @@ public class MusicChooseButton extends GenericButton{
 	{
 		if(music.getText().endsWith(".ogg") || music.getText().endsWith(".mp3") || music.getText().endsWith(".wav"))
 		{
-			SpootWifi.save.getChannel(b).getSWBlock(b).getStorage().addString("MusicValue", music.getText());
+			storage.addString("MusicValue", music.getText());
 			event.getPlayer().sendNotification("Music set", "", Material.RECORD_4);
+			
+			storage.sync(p);
 		}
 		else
 		{

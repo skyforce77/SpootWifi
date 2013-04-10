@@ -23,7 +23,7 @@ public class GlobalNotificationTransmitter extends NotificationTransmitter{
 		super(plugin, name);
 		setBlockDesign(getDesign(plugin,0), 0);
 		setBlockDesign(getDesign(plugin,1), 1);
-		setGui(false);
+		setGui(GlobalNotificationChooseGui.class);
 	}
 	
 	private static BlockDesign getDesign(Plugin p,int design)
@@ -46,7 +46,6 @@ public class GlobalNotificationTransmitter extends NotificationTransmitter{
 	public boolean onBlockInteract(World world, int x, int y, int z,
 			SpoutPlayer player) {
 		Block b = new Location(world,x,y,z).getBlock();
-		SpootWifi.save.getRawChannel(b);
 		if(!player.isSneaking() && player.getItemInHand().getTypeId() != 0)
 		{
 			ItemStack is = player.getItemInHand();
@@ -56,7 +55,7 @@ public class GlobalNotificationTransmitter extends NotificationTransmitter{
 		}
 		else if(!player.isSneaking() && SpootWifi.canInteract(player, b))
 		{
-			new GlobalNotificationChooseGui(player, b);
+			openGui(player, SpootWifi.save.getChannel(b).getSWBlock(b).getStorage());
 			return true;
 		}
 		return true;
