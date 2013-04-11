@@ -53,12 +53,14 @@ public class Save implements Serializable{
 	{
 		Channel chan = getChannel(channel);
 		chan.addTransmitter(b);
+		chan.getSWBlock(b).getStorage().addInteger("SpootWifiChannel", channel);
 	}
 	
 	public void addReceiver(Integer channel, Block b)
 	{
 		Channel chan = getChannel(channel);
 		chan.addReceiver(b);
+		chan.getSWBlock(b).getStorage().addInteger("SpootWifiChannel", channel);
 	}
 	
 	public void addTransmitter(Integer channel, Block b, Player p)
@@ -82,12 +84,14 @@ public class Save implements Serializable{
 	public void addTransmitter(Integer channel, SWBlock b)
 	{
 		Channel chan = getChannel(channel);
+		b.getStorage().addInteger("SpootWifiChannel", channel);
 		chan.addTransmitter(b);
 	}
 	
 	public void addReceiver(Integer channel, SWBlock b)
 	{
 		Channel chan = getChannel(channel);
+		b.getStorage().addInteger("SpootWifiChannel", channel);
 		chan.addReceiver(b);
 	}
 	

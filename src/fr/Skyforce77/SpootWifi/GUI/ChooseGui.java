@@ -82,7 +82,6 @@ public class ChooseGui extends SWGui {
 		this.setBgVisible(true);
 		
 		sp.getMainScreen().attachPopupScreen(this);
-		
 	}
 
 }

@@ -1,5 +1,6 @@
 package fr.Skyforce77.SpootWifi.Materials.Extended;
 
+import org.bukkit.ChatColor;
 import org.bukkit.block.BlockFace;
 import org.bukkit.plugin.Plugin;
 import org.getspout.spoutapi.block.SpoutBlock;
@@ -14,8 +15,10 @@ import fr.Skyforce77.SpootWifi.Utils.RessourceManager;
 
 public class WirelessSniffer extends ItemReceiver{
 
+	public String prefixe;
 	public WirelessSniffer(Plugin plugin, String name) {
 		super(plugin, name, RessourceManager.getTexture("sniffer.png"));
+		prefixe = ChatColor.GOLD+"Sniffer"+ChatColor.GREEN+" > ";
 	}
 	
 	@Override
@@ -30,11 +33,11 @@ public class WirelessSniffer extends ItemReceiver{
 			Integer i = ItemSave.getChannel(player.getItemInHand());
 			if(SpootWifi.save.isChannelEmpty(i))
 			{
-				player.sendMessage("Channel "+i+" is empty.");
+				player.sendMessage(prefixe+"Channel "+i+" is empty.");
 			}
 			else
 			{
-				player.sendMessage("Channel "+i+" is used.");
+				player.sendMessage(prefixe+"Channel "+i+" is used.");
 			}
 		}
 		return false;

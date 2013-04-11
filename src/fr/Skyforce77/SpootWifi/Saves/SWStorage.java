@@ -38,15 +38,14 @@ public class SWStorage implements Serializable{
 		
 	public SWStorage(Block b) {
 		Location loc = b.getLocation();
-		integers.put("type",0);
 		doubles.put("x", loc.getX());
 		doubles.put("y", loc.getY());
 		doubles.put("z", loc.getZ());
 		strings.put("world", b.getWorld().getName());
+		integers.put("StorageType",0);
 	};
 	
 	public SWStorage(NBTTagCompound nbt) {
-		integers.put("type",1);
 		for(Object o : nbt.c().toArray()) {
 			NBTBase base = (NBTBase)o;
 			String s = base.getName();
@@ -66,6 +65,7 @@ public class SWStorage implements Serializable{
 				floats.put(s, ((NBTTagFloat)base).data);
 			}
 		}
+		integers.put("StorageType",1);
 	};
 	
 	public void addObject(String key, Object value)
@@ -199,13 +199,12 @@ public class SWStorage implements Serializable{
 	
 	public boolean isBlockStorage()
 	{
-		return getInteger("type") == 0;
+		return getInteger("StorageType") == 0;
 	}
 	
 	public Block getBlock()
 	{
 		Location loc = new Location(Bukkit.getWorld(getString("world")), getDouble("x"), getDouble("y"), getDouble("z"));
-		System.out.println(getString("world")); System.out.println(getDouble("x")); System.out.println(getDouble("y")); System.out.println(getDouble("z"));
 		return loc.getBlock();
 	}
 	
@@ -231,11 +230,18 @@ public class SWStorage implements Serializable{
 		this.bytes.putAll(maps.get(0));
 		this.doubles.putAll(maps.get(1));
 		this.floats.putAll(maps.get(2));
-		this.integers.putAll(maps.get(3));
 		this.longs.putAll(maps.get(4));
 		this.objects.putAll(maps.get(5));
 		this.storages.putAll(maps.get(6));
 		this.strings.putAll(maps.get(7));
+		
+		for(Object s : maps.get(3).keySet())
+		{
+			if(!((String)s).equals("StorageType"))
+			{
+				integers.put((String)s, (Integer)maps.get(3).get(s));
+			}
+		}
 	}
 	
 	public NBTTagCompound toNBT() {
@@ -275,14 +281,7 @@ public class SWStorage implements Serializable{
 	{
 		if(isBlockStorage())
 		{
-			if(SpootWifi.save.hasChannel(getBlock()))
-			{
-				SpootWifi.save.getChannel(getBlock()).getSWBlock(getBlock()).addStorage(this);
-			}
-			else if(SpootWifi.storage.hasBlock(getBlock()))
-			{
-				SpootWifi.storage.getSWBlock(getBlock()).addStorage(this);
-			}
+			SpootWifi.save.getChannel(getBlock()).getSWBlock(getBlock()).addStorage(this);
 		}
 		else
 		{
