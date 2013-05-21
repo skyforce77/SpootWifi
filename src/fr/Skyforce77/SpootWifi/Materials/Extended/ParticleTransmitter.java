@@ -8,21 +8,24 @@ import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.block.design.BlockDesign;
 import org.getspout.spoutapi.block.design.GenericCubeBlockDesign;
+import org.getspout.spoutapi.particle.Particle;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import fr.Skyforce77.SpootWifi.SpootWifi;
-import fr.Skyforce77.SpootWifi.GUI.MobChooseGui;
+import fr.Skyforce77.SpootWifi.GUI.ParticleTransmitterGui;
 import fr.Skyforce77.SpootWifi.Materials.Basics.Transmitter;
 import fr.Skyforce77.SpootWifi.Saves.Channel;
-import fr.Skyforce77.SpootWifi.WifiPackets.EntityTypePacket;
+import fr.Skyforce77.SpootWifi.Saves.SWParticle;
+import fr.Skyforce77.SpootWifi.Saves.SWStorage;
+import fr.Skyforce77.SpootWifi.WifiPackets.ParticlePacket;
 import fr.Skyforce77.SpootWifi.WifiPackets.Events.PacketOperator;
 
-public class MobTransmitter extends Transmitter{
+public class ParticleTransmitter extends Transmitter{
 
-	public MobTransmitter(Plugin plugin, String name) {
+	public ParticleTransmitter(Plugin plugin, String name) {
 		super(plugin, name, 41, getDesign(plugin,0));
 		setBlockDesign(getDesign(plugin,1), 1);
-		setGui(MobChooseGui.class);
+		setGui(ParticleTransmitterGui.class);
 	}
 	
 	private static BlockDesign getDesign(Plugin p,int design)
@@ -59,7 +62,15 @@ public class MobTransmitter extends Transmitter{
 		{
 			SpoutManager.getMaterialManager().overrideBlock(b, b.getCustomBlock(), (byte)1);
 			Channel c = SpootWifi.save.getChannel(b);
-			new EntityTypePacket(c.getSWBlock(b).getStorage().getString("MobType"), c.getSWBlock(b).getStorage().getString("CustomName")).broadcast(c, new PacketOperator(b));
+			SWStorage storage = c.getSWBlock(b).getStorage();
+			Particle part = new Particle(storage.getString("ParticleType"), null,null);
+			part.setParticleBlue(storage.getFloat("ParticleBlue"));
+			part.setParticleRed(storage.getFloat("ParticleRed"));
+			part.setParticleGreen(storage.getFloat("ParticleGreen"));
+			part.setAmount(100);
+			part.setMaxAge(200);
+			part.setScale(1.0F);
+			new ParticlePacket(new SWParticle(part)).broadcast(c, new PacketOperator(b));
 		}
 		else if(!powered && b.getCustomBlockData() == Byte.parseByte("1"))
 		{

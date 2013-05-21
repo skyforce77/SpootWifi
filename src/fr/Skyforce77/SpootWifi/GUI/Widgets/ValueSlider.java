@@ -6,24 +6,26 @@ import org.getspout.spoutapi.gui.GenericSlider;
 
 import fr.Skyforce77.SpootWifi.Saves.SWStorage;
 
-public class MusicSlider extends GenericSlider{
+public class ValueSlider extends GenericSlider{
 
 	SWStorage storage;
 	Player p;
+	String label;
 	
-	public MusicSlider(Player p, SWStorage storage)
+	public ValueSlider(Player p, SWStorage storage, String label)
 	{
 		this.storage = storage;
-		setSliderPosition(storage.getFloat("MusicPower"));
-		setText("Volume: "+((int)(getSliderPosition()*100))+"%");
+		this.label = label;
+		setSliderPosition(storage.getFloat(label));
+		setText(label+": "+((int)(getSliderPosition()*100))+"%");
 	}
 	
 	@Override
 	public void onSliderDrag(SliderDragEvent event) {
-		storage.addFloat("MusicPower", event.getNewPosition());
+		storage.addFloat(label, event.getNewPosition());
 		
 		storage.sync(p);
-		setText("Volume: "+((int)(getSliderPosition()*100))+"%");
+		setText(label+": "+((int)(getSliderPosition()*100))+"%");
 		super.onSliderDrag(event);
 	}
 

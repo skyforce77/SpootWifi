@@ -2,7 +2,6 @@ package fr.Skyforce77.SpootWifi.GUI;
 
 import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.ContainerType;
-import org.getspout.spoutapi.gui.GenericComboBox;
 import org.getspout.spoutapi.gui.GenericContainer;
 import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.GenericTextField;
@@ -14,13 +13,13 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import fr.Skyforce77.SpootWifi.SpootWifi;
 import fr.Skyforce77.SpootWifi.GUI.Widgets.ChannelChangeButton;
 import fr.Skyforce77.SpootWifi.GUI.Widgets.ChannelChooseButton;
-import fr.Skyforce77.SpootWifi.GUI.Widgets.MobComboBox;
-import fr.Skyforce77.SpootWifi.GUI.Widgets.ValueTextField;
+import fr.Skyforce77.SpootWifi.GUI.Widgets.ParticleComboBox;
+import fr.Skyforce77.SpootWifi.GUI.Widgets.ValueSlider;
 import fr.Skyforce77.SpootWifi.Saves.SWStorage;
 
-public class MobChooseGui extends SWGui {
+public class ParticleTransmitterGui extends SWGui {
 	
-	public MobChooseGui(String title, SpoutPlayer sp, SWStorage storage)
+	public ParticleTransmitterGui(String title, SpoutPlayer sp, SWStorage storage)
 	{
 		super(title,sp,storage);
 		GenericContainer container = new GenericContainer();
@@ -66,7 +65,7 @@ public class MobChooseGui extends SWGui {
 
 		container.setAnchor(WidgetAnchor.CENTER_CENTER);
 		container.setWidth(150);
-		container.setHeight(100);
+		container.setHeight(180);
 		container.setAlign(WidgetAnchor.CENTER_CENTER);
 		container.setPriority(RenderPriority.Lowest);
 		container.setX(container.getX()-container.getWidth()/2);
@@ -75,18 +74,18 @@ public class MobChooseGui extends SWGui {
 		GenericTexture texture = new GenericTexture("https://dl.dropbox.com/u/38885163/plugins/moreblocks/plugin/gui.png");
 		texture.setAnchor(WidgetAnchor.CENTER_CENTER);
 		texture.setWidth(170);
-		texture.setHeight(120);
+		texture.setHeight(200);
 		texture.setPriority(RenderPriority.High);
 		texture.setX(-texture.getWidth()/2);
 		texture.setY(-texture.getHeight()/2);
 		
-		GenericComboBox color = new MobComboBox(storage,sp);
-		color.setText("Choose EntityType");
+		ParticleComboBox particletype = new ParticleComboBox(storage, sp);
 		
-		ValueTextField tfname = new ValueTextField(sp, storage, "CustomName");
-		tfname.setTooltip("CustomName\n-blank if you don't want name.");
+		ValueSlider red = new ValueSlider(sp, storage, "ParticleRed");
+		ValueSlider green = new ValueSlider(sp, storage, "ParticleGreen");
+		ValueSlider blue = new ValueSlider(sp, storage, "ParticleBlue");
 		
-		container.addChildren(color,tfname);
+		container.addChildren(particletype,red,green,blue);
 		
 		this.attachWidgets(SpootWifi.plugin, container, texture);
 		this.setTransparent(true);

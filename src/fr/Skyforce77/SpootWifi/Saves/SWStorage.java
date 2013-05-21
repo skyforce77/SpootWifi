@@ -12,14 +12,14 @@ import org.bukkit.entity.Player;
 import fr.Skyforce77.SpootWifi.SpootWifi;
 import fr.Skyforce77.SpootWifi.WifiPackets.WifiPacket;
 
-import net.minecraft.server.v1_5_R2.NBTBase;
-import net.minecraft.server.v1_5_R2.NBTTagByte;
-import net.minecraft.server.v1_5_R2.NBTTagCompound;
-import net.minecraft.server.v1_5_R2.NBTTagDouble;
-import net.minecraft.server.v1_5_R2.NBTTagFloat;
-import net.minecraft.server.v1_5_R2.NBTTagInt;
-import net.minecraft.server.v1_5_R2.NBTTagLong;
-import net.minecraft.server.v1_5_R2.NBTTagString;
+import net.minecraft.server.v1_5_R3.NBTBase;
+import net.minecraft.server.v1_5_R3.NBTTagByte;
+import net.minecraft.server.v1_5_R3.NBTTagCompound;
+import net.minecraft.server.v1_5_R3.NBTTagDouble;
+import net.minecraft.server.v1_5_R3.NBTTagFloat;
+import net.minecraft.server.v1_5_R3.NBTTagInt;
+import net.minecraft.server.v1_5_R3.NBTTagLong;
+import net.minecraft.server.v1_5_R3.NBTTagString;
 
 public class SWStorage implements Serializable{
 

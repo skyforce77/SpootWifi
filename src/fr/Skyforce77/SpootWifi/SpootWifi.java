@@ -1,7 +1,6 @@
 package fr.Skyforce77.SpootWifi;
 
 import java.io.IOException;
-
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -381,6 +380,5 @@ public class SpootWifi extends JavaPlugin implements Listener{
 			}
 		}
 	}
-
 
 }

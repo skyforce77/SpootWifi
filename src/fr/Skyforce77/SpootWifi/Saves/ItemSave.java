@@ -1,11 +1,11 @@
 package fr.Skyforce77.SpootWifi.Saves;
 
-import net.minecraft.server.v1_5_R2.NBTTagCompound;
+import net.minecraft.server.v1_5_R3.NBTTagCompound;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_5_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -13,7 +13,7 @@ public class ItemSave {
 
 	public static Integer getChannel(ItemStack is)
 	{
-		net.minecraft.server.v1_5_R2.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
+		net.minecraft.server.v1_5_R3.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
 		
 		if(nmsis.tag == null)
 		{
@@ -30,7 +30,7 @@ public class ItemSave {
 	
 	public static ItemStack setChannel(ItemStack is, int channel)
 	{
-		net.minecraft.server.v1_5_R2.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
+		net.minecraft.server.v1_5_R3.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
 		
 		if(nmsis.tag == null)
 		{
@@ -43,7 +43,7 @@ public class ItemSave {
 	
 	public static Integer getOption(ItemStack is, String option)
 	{
-		net.minecraft.server.v1_5_R2.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
+		net.minecraft.server.v1_5_R3.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
 		
 		if(nmsis.tag == null)
 		{
@@ -60,7 +60,7 @@ public class ItemSave {
 	
 	public static ItemStack setOption(ItemStack is, String option, int num)
 	{
-		net.minecraft.server.v1_5_R2.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
+		net.minecraft.server.v1_5_R3.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
 		
 		if(nmsis.tag == null)
 		{
@@ -73,7 +73,7 @@ public class ItemSave {
 	
 	public static Block getBlock(ItemStack is)
 	{
-		net.minecraft.server.v1_5_R2.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
+		net.minecraft.server.v1_5_R3.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
 		
 		if(nmsis.tag == null)
 		{
@@ -94,7 +94,7 @@ public class ItemSave {
 	
 	public static NBTTagCompound getNBT(ItemStack is)
 	{
-		net.minecraft.server.v1_5_R2.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
+		net.minecraft.server.v1_5_R3.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
 		
 		if(nmsis.tag == null)
 		{
@@ -106,14 +106,14 @@ public class ItemSave {
 
 	public static ItemStack setNBT(ItemStack is, SWStorage storage)
 	{
-		net.minecraft.server.v1_5_R2.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
+		net.minecraft.server.v1_5_R3.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
 		nmsis.tag = storage.toNBT();
 		return CraftItemStack.asCraftMirror(nmsis);
 	}
 	
 	public static ItemStack setBlock(ItemStack is, Block b)
 	{
-		net.minecraft.server.v1_5_R2.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
+		net.minecraft.server.v1_5_R3.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
 		
 		if(nmsis.tag == null)
 		{

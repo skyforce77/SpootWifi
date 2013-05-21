@@ -4,10 +4,7 @@ import java.io.Serializable;
 
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
-import org.getspout.spoutapi.Spout;
-import org.getspout.spoutapi.packet.PacketParticle;
 import org.getspout.spoutapi.particle.Particle;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class SWParticle implements Serializable{
 
@@ -44,13 +41,8 @@ public class SWParticle implements Serializable{
 		part.setParticleGreen(particleGreen);
 		part.setParticleRed(particleRed);
 		part.setAmount(amount);
-		for(SpoutPlayer sp : Spout.getServer().getOnlinePlayers())
-		{
-			if(sp.isSpoutCraftEnabled())
-			{
-				sp.sendPacket(new PacketParticle(part));
-			}
-		}
+		part.setRange(100.0D);
+		part.spawn();
 	}
 
 }
