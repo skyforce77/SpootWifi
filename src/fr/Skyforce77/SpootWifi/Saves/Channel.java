@@ -216,13 +216,13 @@ public class Channel implements Serializable{
 		
 		for(Player sp : Bukkit.getServer().getOnlinePlayers())
 		{
-			boolean send =  false;
+			boolean send = false;
 			for(ItemStack is : sp.getInventory().getContents())
 			{
 				if(is != null)
 				{
 					SpoutItemStack sis = new SpoutItemStack(is);
-					if(sis.isCustomItem() && sis.getMaterial() instanceof ItemReceiver && ItemSave.getChannel(is).equals(this.channel))
+					if(sis.isCustomItem() && sis.getMaterial() instanceof ItemReceiver && ItemSave.getChannel(is) == this.channel)
 					{
 						send = true;
 					}
