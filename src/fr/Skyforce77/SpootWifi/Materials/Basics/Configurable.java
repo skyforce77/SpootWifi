@@ -3,6 +3,7 @@ package fr.Skyforce77.SpootWifi.Materials.Basics;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.block.design.BlockDesign;
 import org.getspout.spoutapi.material.block.GenericCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
@@ -120,6 +121,9 @@ public class Configurable extends GenericCustomBlock{
 			}
 		}
 	}
+	
+	public void onPlaced(SpoutBlock b, Player p, SWStorage storage) {}
+	public void onBreaked(SpoutBlock b, Player p, SWStorage storage) {}
 	
 	public Boolean hasGui() {
 		return hasgui;

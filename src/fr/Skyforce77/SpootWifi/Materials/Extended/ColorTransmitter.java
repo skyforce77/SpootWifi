@@ -1,8 +1,10 @@
 package fr.Skyforce77.SpootWifi.Materials.Extended;
 
+import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
@@ -14,6 +16,7 @@ import fr.Skyforce77.SpootWifi.SpootWifi;
 import fr.Skyforce77.SpootWifi.GUI.ColorChooseGui;
 import fr.Skyforce77.SpootWifi.Materials.Basics.Transmitter;
 import fr.Skyforce77.SpootWifi.Saves.Channel;
+import fr.Skyforce77.SpootWifi.Saves.SWStorage;
 import fr.Skyforce77.SpootWifi.WifiPackets.WoolColorPacket;
 import fr.Skyforce77.SpootWifi.WifiPackets.Events.PacketOperator;
 
@@ -93,6 +96,19 @@ public class ColorTransmitter extends Transmitter{
 		}
 		
 		SpootWifi.save.getChannel(b).update();
+	}
+	
+	@Override
+	public void onPlaced(SpoutBlock b, Player p, SWStorage storage) {
+		DyeColor color = DyeColor.getByWoolData(storage.getByte("WoolColor"));
+		if(b.getCustomBlockData() >= 16)
+		{
+			SpoutManager.getMaterialManager().overrideBlock(b, b.getCustomBlock(), (byte)(color.getWoolData()+16));
+		}
+		else
+		{
+			SpoutManager.getMaterialManager().overrideBlock(b, b.getCustomBlock(), color.getWoolData());
+		}
 	}
 
 }

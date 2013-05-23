@@ -41,6 +41,8 @@ import fr.Skyforce77.SpootWifi.Materials.Extended.MobTransmitter;
 import fr.Skyforce77.SpootWifi.Materials.Extended.MusicTransmitter;
 import fr.Skyforce77.SpootWifi.Materials.Extended.NotificationTransmitter;
 import fr.Skyforce77.SpootWifi.Materials.Extended.Radio;
+import fr.Skyforce77.SpootWifi.Materials.Extended.RandomDiode;
+import fr.Skyforce77.SpootWifi.Materials.Extended.RandomPixel;
 import fr.Skyforce77.SpootWifi.Materials.Extended.ReceiverColoredDiode;
 import fr.Skyforce77.SpootWifi.Materials.Extended.ReceiverColoredPixel;
 import fr.Skyforce77.SpootWifi.Materials.Extended.ReceiverDiode;
@@ -85,6 +87,8 @@ public class SpootWifi extends JavaPlugin implements Listener{
 	public static CustomBlock fireplace = null;
 	public static CustomBlock lightningblock = null;
 	public static CustomBlock wirelesslamp = null;
+	public static CustomBlock randomcolordiode = null;
+	public static CustomBlock randomcolorpixel = null;
 	public static CustomItem sniffer = null;
 	public static CustomItem radio = null;
 	public static CustomItem ironstick = null;
@@ -136,6 +140,14 @@ public class SpootWifi extends JavaPlugin implements Listener{
 		ironstick = new GenericCustomItem(this, "Iron Stick", RessourceManager.getTexture("ironstick.png"));
 		receivereffect = new ReceiverEffect(this, "Wireless Effect Receiver");
 		transmittereffect = new EffectTransmitter(this, "Wireless Effect Transmitter");
+		randomcolordiode = new RandomDiode(this, "Random Color Diode");
+		randomcolorpixel = new RandomPixel(this, "Random Color Pixel");
+		
+		//TODO
+		//Add Particle transmitter and receiver when will work
+		/*new ParticleTransmitter(this, "Wireless Particle Transmiter");
+		new ReceiverParticle(this, "Wireless Particle Receiver");*/
+		
 		getServer().getPluginManager().registerEvents(this, this);
 		RecipesManager.createRecipes();
 		
@@ -159,7 +171,7 @@ public class SpootWifi extends JavaPlugin implements Listener{
 	{
 		SpoutBlock block = (SpoutBlock)e.getBlock();
 		
-		if(block.getCustomBlock() != null)
+		if(block.getCustomBlock() != null && !e.isCancelled())
 		{
 			if(block.getCustomBlock() instanceof Configurable)
 			{
@@ -178,6 +190,8 @@ public class SpootWifi extends JavaPlugin implements Listener{
 					storage.addBlock(block);
 					storage.getSWBlock(block).getStorage().add(new SWStorage(ItemSave.getNBT(e.getPlayer().getItemInHand())));
 				}
+				
+				((Configurable)block.getCustomBlock()).onPlaced(block, e.getPlayer(), new SWStorage(ItemSave.getNBT(e.getPlayer().getItemInHand())));
 				
 				if(ItemSave.getOption(e.getPlayer().getItemInHand(), "AutoChannel") == 1)
 				{
@@ -200,13 +214,22 @@ public class SpootWifi extends JavaPlugin implements Listener{
 				return;
 			}
 			
-			if(block.getCustomBlock() instanceof Transmitter)
-			{
-				save.rmvTransmitter(block);
-			}
-			if(block.getCustomBlock() instanceof  Receiver)
-			{
-				save.rmvReceiver(block);
+			if(block.getCustomBlock() instanceof Configurable) {
+				if(block.getCustomBlock() instanceof Transmitter)
+				{
+					((Configurable)block.getCustomBlock()).onBreaked(block, e.getPlayer(), save.getChannel(block).getSWBlock(block).getStorage());
+					save.rmvTransmitter(block);
+				}
+				else if(block.getCustomBlock() instanceof  Receiver)
+				{
+					((Configurable)block.getCustomBlock()).onBreaked(block, e.getPlayer(), save.getChannel(block).getSWBlock(block).getStorage());
+					save.rmvReceiver(block);
+				}
+				else
+				{
+					((Configurable)block.getCustomBlock()).onBreaked(block, e.getPlayer(), storage.getSWBlock(block).getStorage());
+					storage.removeBlock(block);
+				}
 			}
 		}
 	}
