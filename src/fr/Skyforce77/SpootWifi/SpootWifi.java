@@ -18,6 +18,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.block.design.Texture;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
@@ -111,6 +112,7 @@ public class SpootWifi extends JavaPlugin implements Listener{
 		RessourceManager.LoadConfig();
 		save = Save.Deserialize(this.getDataFolder().getPath()+"/Ressources/Storage/Save.SpootWifi");
 		storage = Storage.Deserialize(this.getDataFolder().getPath()+"/Ressources/Storage/BlockStorage.SpootWifi");
+		SpoutManager.getFileManager().addToPreLoginCache(this, "http://dl.dropbox.com/u/38885163/plugins/moreblocks/plugin/gui.png");
 		
 		texture = new Texture(this, RessourceManager.getTexture("terrain.png"), 256,256,16);
 		

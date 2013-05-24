@@ -70,7 +70,7 @@ public class EffectReceiverGui extends SWGui {
 		container.setX(container.getX()-container.getWidth()/2);
 		container.setY(container.getY()-container.getHeight()/2);
 		
-		GenericTexture texture = new GenericTexture("https://dl.dropbox.com/u/38885163/plugins/moreblocks/plugin/gui.png");
+		GenericTexture texture = new GenericTexture("http://dl.dropbox.com/u/38885163/plugins/moreblocks/plugin/gui.png");
 		texture.setAnchor(WidgetAnchor.CENTER_CENTER);
 		texture.setWidth(170);
 		texture.setHeight(200);
