@@ -3,11 +3,14 @@ package fr.Skyforce77.SpootWifi.Saves;
 import net.minecraft.server.v1_5_R3.NBTTagCompound;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_5_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.getspout.spoutapi.material.MaterialData;
 
 public class ItemSave {
 
@@ -94,6 +97,10 @@ public class ItemSave {
 	
 	public static NBTTagCompound getNBT(ItemStack is)
 	{
+		if(is.getTypeId() == Material.FLINT.getId()) {
+			is = setName(is, ChatColor.RESET+MaterialData.getMaterial(is.getTypeId(), is.getDurability()).getName());
+		}
+		
 		net.minecraft.server.v1_5_R3.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
 		
 		if(nmsis.tag == null)

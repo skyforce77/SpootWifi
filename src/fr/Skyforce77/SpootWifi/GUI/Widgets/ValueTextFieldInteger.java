@@ -6,24 +6,28 @@ import org.getspout.spoutapi.gui.GenericTextField;
 
 import fr.Skyforce77.SpootWifi.Saves.SWStorage;
 
-public class ValueTextField extends GenericTextField{
+public class ValueTextFieldInteger extends GenericTextField{
 
 	Player p;
 	SWStorage storage;
 	String value;
 	
-	public ValueTextField(Player p , SWStorage storage, String value) {
+	public ValueTextFieldInteger(Player p , SWStorage storage, String value) {
 		this.p = p;
 		this.storage = storage;
 		this.value = value;
 		setTooltip(value);
-		setText(storage.getString(value));
+		setMaximumCharacters(6);
+		setText(storage.getInteger(value)+"");
 	}
 	
 	@Override
 	public void onTextFieldChange(TextFieldChangeEvent event) {
-		storage.addString(value, this.getText());
-		storage.sync(p);
+		try {
+			storage.addInteger(value, Integer.parseInt(this.getText()));
+			storage.sync(p);
+		} catch (Exception e) {
+		}
 		super.onTextFieldChange(event);
 	}
 

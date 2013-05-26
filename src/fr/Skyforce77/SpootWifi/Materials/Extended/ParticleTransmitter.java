@@ -8,10 +8,10 @@ import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.block.design.BlockDesign;
 import org.getspout.spoutapi.block.design.GenericCubeBlockDesign;
-import org.getspout.spoutapi.particle.Particle;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import fr.Skyforce77.SpootWifi.SpootWifi;
+import fr.Skyforce77.SpootWifi.Effects.ParticleType;
 import fr.Skyforce77.SpootWifi.GUI.ParticleTransmitterGui;
 import fr.Skyforce77.SpootWifi.Materials.Basics.Transmitter;
 import fr.Skyforce77.SpootWifi.Saves.Channel;
@@ -32,11 +32,11 @@ public class ParticleTransmitter extends Transmitter{
 	{
 		if(design == 1)
 		{
-			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{45,49,49,49,49,8});
+			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{45,49,49,49,49,55});
 		}
 		else if(design == 0)
 		{
-			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{46,50,50,50,50,9});
+			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{46,50,50,50,50,56});
 		}
 		else
 		{
@@ -63,14 +63,7 @@ public class ParticleTransmitter extends Transmitter{
 			SpoutManager.getMaterialManager().overrideBlock(b, b.getCustomBlock(), (byte)1);
 			Channel c = SpootWifi.save.getChannel(b);
 			SWStorage storage = c.getSWBlock(b).getStorage();
-			Particle part = new Particle(storage.getString("ParticleType"), null,null);
-			part.setParticleBlue(storage.getFloat("ParticleBlue"));
-			part.setParticleRed(storage.getFloat("ParticleRed"));
-			part.setParticleGreen(storage.getFloat("ParticleGreen"));
-			part.setAmount(100);
-			part.setMaxAge(200);
-			part.setScale(1.0F);
-			new ParticlePacket(new SWParticle(part)).broadcast(c, new PacketOperator(b));
+			new ParticlePacket(new SWParticle(ParticleType.valueOf(storage.getString("ParticleType")),storage.getInteger("ParticleAmount"), storage.getFloat("ParticleSpeed"), storage.getFloat("ParticleOffset"), storage.getInteger("ParticleData"))).broadcast(c, new PacketOperator(b));
 		}
 		else if(!powered && b.getCustomBlockData() == Byte.parseByte("1"))
 		{

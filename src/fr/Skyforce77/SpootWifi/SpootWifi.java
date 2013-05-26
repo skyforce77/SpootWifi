@@ -41,6 +41,7 @@ import fr.Skyforce77.SpootWifi.Materials.Extended.LightningBlock;
 import fr.Skyforce77.SpootWifi.Materials.Extended.MobTransmitter;
 import fr.Skyforce77.SpootWifi.Materials.Extended.MusicTransmitter;
 import fr.Skyforce77.SpootWifi.Materials.Extended.NotificationTransmitter;
+import fr.Skyforce77.SpootWifi.Materials.Extended.ParticleTransmitter;
 import fr.Skyforce77.SpootWifi.Materials.Extended.Radio;
 import fr.Skyforce77.SpootWifi.Materials.Extended.RandomDiode;
 import fr.Skyforce77.SpootWifi.Materials.Extended.RandomPixel;
@@ -52,6 +53,7 @@ import fr.Skyforce77.SpootWifi.Materials.Extended.ReceiverEffect;
 import fr.Skyforce77.SpootWifi.Materials.Extended.ReceiverFirework;
 import fr.Skyforce77.SpootWifi.Materials.Extended.ReceiverJukeBox;
 import fr.Skyforce77.SpootWifi.Materials.Extended.ReceiverMob;
+import fr.Skyforce77.SpootWifi.Materials.Extended.ReceiverParticle;
 import fr.Skyforce77.SpootWifi.Materials.Extended.ReceiverPixel;
 import fr.Skyforce77.SpootWifi.Materials.Extended.WirelessLamp;
 import fr.Skyforce77.SpootWifi.Materials.Extended.WirelessSniffer;
@@ -83,6 +85,8 @@ public class SpootWifi extends JavaPlugin implements Listener{
 	public static CustomBlock globaltransmitternotification = null;
 	public static CustomBlock receivermob = null;
 	public static CustomBlock transmittermob = null;
+	public static CustomBlock receiverparticle = null;
+	public static CustomBlock transmitterparticle = null;
 	public static CustomBlock receivereffect = null;
 	public static CustomBlock transmittereffect = null;
 	public static CustomBlock fireplace = null;
@@ -144,11 +148,8 @@ public class SpootWifi extends JavaPlugin implements Listener{
 		transmittereffect = new EffectTransmitter(this, "Wireless Effect Transmitter");
 		randomcolordiode = new RandomDiode(this, "Random Color Diode");
 		randomcolorpixel = new RandomPixel(this, "Random Color Pixel");
-		
-		//TODO
-		//Add Particle transmitter and receiver when will work
-		/*new ParticleTransmitter(this, "Wireless Particle Transmiter");
-		new ReceiverParticle(this, "Wireless Particle Receiver");*/
+		transmitterparticle = new ParticleTransmitter(this, "Wireless Particle Transmiter");
+		receiverparticle = new ReceiverParticle(this, "Wireless Particle Receiver");
 		
 		getServer().getPluginManager().registerEvents(this, this);
 		RecipesManager.createRecipes();

@@ -28,11 +28,11 @@ public class ReceiverParticle extends Receiver{
 	{
 		if(design == 1)
 		{
-			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{45,51,51,51,51,53});
+			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{45,51,51,51,51,55});
 		}
 		else if(design == 0)
 		{
-			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{46,52,52,52,52,54});
+			return new GenericCubeBlockDesign(p, SpootWifi.texture, new int[]{46,52,52,52,52,56});
 		}
 		else
 		{

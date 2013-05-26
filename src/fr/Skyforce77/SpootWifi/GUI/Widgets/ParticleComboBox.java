@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.getspout.spoutapi.gui.GenericComboBox;
-import org.getspout.spoutapi.particle.Particle.ParticleType;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
+import fr.Skyforce77.SpootWifi.Effects.ParticleType;
 import fr.Skyforce77.SpootWifi.Saves.SWStorage;
 
 public class ParticleComboBox extends GenericComboBox{

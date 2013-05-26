@@ -26,8 +26,7 @@ public class SendingPacket implements Runnable{
 	public Long getSendTime() {
 		Location send = event.getSender().getLocation();
 		Location rec = receiver.getLocation();
-		int lenght = event.getPacket().getData().toString().length();
-		return ((long)lenght/5)+Long.parseLong((int)Math.abs((send.getX()-rec.getX())+(send.getY()-rec.getY())+(send.getZ()-rec.getZ()))+"");
+		return ((long)send.distance(rec));
 	}
 
 	@Override
