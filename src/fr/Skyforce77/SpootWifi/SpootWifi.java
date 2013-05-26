@@ -55,6 +55,7 @@ import fr.Skyforce77.SpootWifi.Materials.Extended.ReceiverJukeBox;
 import fr.Skyforce77.SpootWifi.Materials.Extended.ReceiverMob;
 import fr.Skyforce77.SpootWifi.Materials.Extended.ReceiverParticle;
 import fr.Skyforce77.SpootWifi.Materials.Extended.ReceiverPixel;
+import fr.Skyforce77.SpootWifi.Materials.Extended.SoundTransmitter;
 import fr.Skyforce77.SpootWifi.Materials.Extended.WirelessLamp;
 import fr.Skyforce77.SpootWifi.Materials.Extended.WirelessSniffer;
 import fr.Skyforce77.SpootWifi.Saves.ItemSave;
@@ -150,6 +151,7 @@ public class SpootWifi extends JavaPlugin implements Listener{
 		randomcolorpixel = new RandomPixel(this, "Random Color Pixel");
 		transmitterparticle = new ParticleTransmitter(this, "Wireless Particle Transmiter");
 		receiverparticle = new ReceiverParticle(this, "Wireless Particle Receiver");
+		new SoundTransmitter(this, "Wireless Sound Transmiter");
 		
 		getServer().getPluginManager().registerEvents(this, this);
 		RecipesManager.createRecipes();

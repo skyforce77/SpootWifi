@@ -1,6 +1,6 @@
 name: SpootWifi
 main: fr.Skyforce77.SpootWifi.SpootWifi
-version: 0.1.5
+version: 0.1.5.1
 depend: [Spout]
 softdepend: [JukeIt]
 description: Awesome wifi plugin for Spout!

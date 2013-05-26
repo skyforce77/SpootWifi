@@ -1,5 +1,6 @@
 package fr.Skyforce77.SpootWifi.Materials.Extended;
 
+import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
@@ -8,6 +9,7 @@ import org.getspout.spoutapi.block.design.GenericCubeBlockDesign;
 import fr.Skyforce77.SpootWifi.SpootWifi;
 import fr.Skyforce77.SpootWifi.Materials.Basics.Receiver;
 import fr.Skyforce77.SpootWifi.WifiPackets.MusicPacket;
+import fr.Skyforce77.SpootWifi.WifiPackets.SoundPacket;
 import fr.Skyforce77.SpootWifi.WifiPackets.WifiPacket;
 
 public class ReceiverJukeBox extends Receiver{
@@ -54,6 +56,16 @@ public class ReceiverJukeBox extends Receiver{
 		{
 			MusicPacket mp = (MusicPacket)wp;
 			SpoutManager.getSoundManager().playGlobalCustomMusic(SpootWifi.plugin, mp.getMusic(), true, b.getLocation(), range, (int)(mp.getPower()*100));
+		}
+		if(wp instanceof SoundPacket)
+		{
+			try
+			{
+				SoundPacket mp = (SoundPacket)wp;
+				Location loc = b.getLocation().add(0.5,0.5,0.5);
+				loc.getWorld().playSound(loc, mp.getSound(), mp.getVolume(), mp.getHigh());
+			}
+			catch(Exception e){}
 		}
 		super.onPacketReceived(wp, b);
 	}
