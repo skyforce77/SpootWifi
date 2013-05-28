@@ -74,7 +74,7 @@ public class FireworkTransmitter extends Transmitter{
 			SpoutManager.getMaterialManager().overrideBlock(b, b.getCustomBlock(), (byte)0);
 		}
 		
-		SpootWifi.save.getChannel(b).update();
+		SpootWifi.save.getChannel(b).update(b.getWorld());
 	}
 
 }

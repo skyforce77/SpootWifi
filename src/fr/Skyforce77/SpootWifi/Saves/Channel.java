@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -94,7 +95,7 @@ public class Channel implements Serializable{
 		if(!hasReceiver(b))
 		{
 			receivers.add(new SWBlock(b));
-			update();
+			update(b.getWorld());
 		}
 	}
 	
@@ -103,7 +104,7 @@ public class Channel implements Serializable{
 		if(!hasTransmitter(b))
 		{
 			transmitters.add(new SWBlock(b));
-			update();
+			update(b.getWorld());
 		}
 	}
 	
@@ -112,7 +113,7 @@ public class Channel implements Serializable{
 		if(!hasReceiver(b.getBlock()))
 		{
 			receivers.add(b);
-			update();
+			update(b.getBlock().getWorld());
 		}
 	}
 	
@@ -121,7 +122,7 @@ public class Channel implements Serializable{
 		if(!hasTransmitter(b.getBlock()))
 		{
 			transmitters.add(b);
-			update();
+			update(b.getBlock().getWorld());
 		}
 	}
 	
@@ -130,7 +131,7 @@ public class Channel implements Serializable{
 		if(hasReceiver(b))
 		{
 			receivers.remove(new SWBlock(b));
-			update();
+			update(b.getWorld());
 		}
 	}
 	
@@ -139,7 +140,7 @@ public class Channel implements Serializable{
 		if(hasTransmitter(b))
 		{
 			transmitters.remove(new SWBlock(b));
-			update();
+			update(b.getWorld());
 		}
 	}
 	
@@ -161,8 +162,13 @@ public class Channel implements Serializable{
 		return blocks;
 	}
 	
-	public void update()
+	public void update(World w)
 	{
+		if(!SpootWifi.plugin.getConfig().getBoolean("wifi_through_worlds")) {
+			updateWorld(w);
+			return;
+		}
+		
 		boolean active = isActive();
 		for(SWBlock b : receivers)
 		{
@@ -186,16 +192,54 @@ public class Channel implements Serializable{
 		}
 	}
 	
+	public void updateWorld(World w)
+	{
+		boolean active = isActive(w);
+		for(SWBlock b : receivers)
+		{
+			if(b.getBlock().getLocation().getWorld().getName().equals(w.getName()))
+			{
+				SpootWifi.setPoweredBlock((SpoutBlock)b.getBlock(), active);
+			}
+		}
+		
+		for(Player sp : Bukkit.getServer().getOnlinePlayers())
+		{
+			if(sp.getLocation().getWorld().getName().equals(w.getName()))
+			{
+				for(ItemStack is : sp.getInventory().getContents())
+				{
+					if(is != null)
+					{
+						SpoutItemStack sis = new SpoutItemStack(is);
+						if(sis.isCustomItem() && sis.getMaterial() instanceof ItemReceiver && ItemSave.getChannel(is).equals(this.channel))
+						{
+							ItemReceiver ir = (ItemReceiver)sis.getMaterial();
+							ir.onPowered((SpoutPlayer)sp, is, active);
+						}
+					}
+				}
+			}
+		}
+	}	
+	
 	public void forcedBroadcastPacket(PacketSendEvent event)
 	{
+		if(!SpootWifi.plugin.getConfig().getBoolean("wifi_through_worlds")) {
+			forcedBroadcastPacketWorld(event);
+			return;
+		}
+		
 		for(SWBlock b : receivers)
 		{
 			SpoutBlock sb = (SpoutBlock)b.getBlock();
+			
 			if(sb.getCustomBlock() != null)
 			{
 				CustomBlock cb = sb.getCustomBlock();
 				if(cb instanceof Receiver)
 				{
+					
 					PacketReceiveEvent receive = new PacketReceiveEvent(event, new PacketOperator(sb));
 					Bukkit.getPluginManager().callEvent(receive);
 					if(!receive.isCancelled())
@@ -249,12 +293,94 @@ public class Channel implements Serializable{
 		}
 	}
 	
+	public void forcedBroadcastPacketWorld(PacketSendEvent event)
+	{
+		for(SWBlock b : receivers)
+		{
+			SpoutBlock sb = (SpoutBlock)b.getBlock();
+			
+			if(sb.getCustomBlock() != null && sb.getLocation().getWorld().getName().equals(event.getSender().getLocation().getWorld().getName()))
+			{
+				CustomBlock cb = sb.getCustomBlock();
+				if(cb instanceof Receiver)
+				{
+					
+					PacketReceiveEvent receive = new PacketReceiveEvent(event, new PacketOperator(sb));
+					Bukkit.getPluginManager().callEvent(receive);
+					if(!receive.isCancelled())
+					{
+						if(SpootWifi.plugin.getConfig().getBoolean("timedpackets"))
+						{
+							SendingPacket sending = new SendingPacket(event, new PacketOperator(sb));
+							Bukkit.getScheduler().runTaskLater(SpootWifi.plugin, sending, sending.getSendTime());
+						}
+						else
+						{
+							((Receiver)cb).onPacketReceived(event.getPacket(), sb);
+						}
+					}
+				}
+			}
+		}
+		
+		for(Player sp : Bukkit.getServer().getOnlinePlayers())
+		{
+			boolean send = false;
+			for(ItemStack is : sp.getInventory().getContents())
+			{
+				if(is != null)
+				{
+					SpoutItemStack sis = new SpoutItemStack(is);
+					if(sis.isCustomItem() && sis.getMaterial() instanceof ItemReceiver && ItemSave.getChannel(is) == this.channel)
+					{
+						send = true;
+					}
+				}
+			}
+			
+			if(!sp.getLocation().getWorld().getName().equals(event.getSender().getLocation().getWorld().getName())) {
+				send = false;
+			}
+			
+			if(send)
+			{
+				PacketReceiveEvent receive = new PacketReceiveEvent(event, new PacketOperator(sp));
+				Bukkit.getPluginManager().callEvent(receive);
+				if(!receive.isCancelled())
+				{
+					SendingPacket sending = new SendingPacket(event, new PacketOperator(sp));
+					if(SpootWifi.plugin.getConfig().getBoolean("timedpackets"))
+					{
+						Bukkit.getScheduler().runTaskLater(SpootWifi.plugin, sending, sending.getSendTime());
+					}
+					else
+					{
+						sending.run();
+					}
+				}
+			}
+		}
+	}
+	
 	public boolean isActive()
 	{
 		boolean active = false;
 		for(SWBlock b : transmitters)
 		{
 			if(SpootWifi.isPowered(b.getBlock()))
+			{
+				active = true;
+			}
+		}
+		return active;
+	}
+	
+	public boolean isActive(World w)
+	{
+		boolean active = false;
+		for(SWBlock b : transmitters)
+		{
+			if(SpootWifi.isPowered(b.getBlock()) && b.getBlock().getWorld().getName().equals(w.getName()))
 			{
 				active = true;
 			}

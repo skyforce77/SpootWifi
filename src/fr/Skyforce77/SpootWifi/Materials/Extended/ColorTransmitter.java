@@ -95,7 +95,7 @@ public class ColorTransmitter extends Transmitter{
 			SpoutManager.getMaterialManager().overrideBlock(b, b.getCustomBlock(), (byte)(b.getCustomBlockData()-16));
 		}
 		
-		SpootWifi.save.getChannel(b).update();
+		SpootWifi.save.getChannel(b).update(b.getWorld());
 	}
 	
 	@Override

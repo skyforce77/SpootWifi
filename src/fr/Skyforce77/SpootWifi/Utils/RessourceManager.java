@@ -62,6 +62,7 @@ public class RessourceManager {
 	{
 		SpootWifi.plugin.getConfig().addDefault("texturepack", "default");
 		SpootWifi.plugin.getConfig().addDefault("timedpackets", false);
+		SpootWifi.plugin.getConfig().addDefault("wifi_through_worlds", false);
 		SpootWifi.plugin.getConfig().options().copyDefaults(true);
 		SpootWifi.plugin.saveConfig();
 	}
