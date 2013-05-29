@@ -7,7 +7,6 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_5_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public class ItemSave {
 
@@ -30,15 +29,9 @@ public class ItemSave {
 	
 	public static ItemStack setChannel(ItemStack is, int channel)
 	{
-		net.minecraft.server.v1_5_R3.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
-		
-		if(nmsis.tag == null)
-		{
-			nmsis.tag = new NBTTagCompound();
-		}
-		
-		nmsis.tag.setInt("SpootWifiChannel", channel);
-		return CraftItemStack.asCraftMirror(nmsis);
+		SWStorage data = new SWStorage(is);	
+		data.addInteger("SpootWifiChannel", channel);
+		return setNBT(is, data);
 	}
 	
 	public static Integer getOption(ItemStack is, String option)
@@ -60,15 +53,9 @@ public class ItemSave {
 	
 	public static ItemStack setOption(ItemStack is, String option, int num)
 	{
-		net.minecraft.server.v1_5_R3.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
-		
-		if(nmsis.tag == null)
-		{
-			nmsis.tag = new NBTTagCompound();
-		}
-		
-		nmsis.tag.setInt(option, num);
-		return CraftItemStack.asCraftMirror(nmsis);
+		SWStorage data = new SWStorage(is);	
+		data.addInteger(option, num);
+		return setNBT(is, data);
 	}
 	
 	public static Block getBlock(ItemStack is)
@@ -114,26 +101,19 @@ public class ItemSave {
 	
 	public static ItemStack setBlock(ItemStack is, Block b)
 	{
-		net.minecraft.server.v1_5_R3.ItemStack nmsis = CraftItemStack.asNMSCopy(is);
-		
-		if(nmsis.tag == null)
-		{
-			nmsis.tag = new NBTTagCompound();
-		}
-
-		nmsis.tag.setInt("x", b.getX());
-		nmsis.tag.setInt("y", b.getY());
-		nmsis.tag.setInt("z", b.getZ());
-		nmsis.tag.setString("world", b.getWorld().getName());
-		return CraftItemStack.asCraftMirror(nmsis);
+		SWStorage data = new SWStorage(is);
+		data.addInteger("x", b.getX());
+		data.addInteger("y", b.getY());
+		data.addInteger("z", b.getZ());
+		data.addString("world", b.getWorld().getName());
+		return setNBT(is, data);
 	}
 	
 	public static ItemStack setName(ItemStack is, String name)
 	{
-		ItemMeta im = is.getItemMeta();
-		im.setDisplayName(name);
-		is.setItemMeta(im);
-		return is;
+		SWStorage data = new SWStorage(is);
+		data.getSWStorage("display").addString("Name", name);
+		return setNBT(is, data);
 	}
 
 }

@@ -26,7 +26,7 @@ public class WirelessSniffer extends ItemReceiver{
 			BlockFace face) {
 		if(player.isSneaking())
 		{
-			new ChooseGui(this.getName(), player, new SWStorage(ItemSave.getNBT(player.getItemInHand())));
+			new ChooseGui(this.getName(), player, new SWStorage(player.getItemInHand()));
 		}
 		else
 		{

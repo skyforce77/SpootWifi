@@ -21,7 +21,7 @@ public class Remote extends GenericCustomItem{
 	
 	@Override
 	public boolean onItemInteract(SpoutPlayer player, SpoutBlock block, BlockFace face) {
-		if(block != null && block.getCustomBlock() != null && block.getCustomBlock() instanceof Transmitter)
+		if(player.isSneaking() && block != null && block.getCustomBlock() != null && block.getCustomBlock() instanceof Transmitter)
 		{
 			player.setItemInHand(ItemSave.setBlock(player.getItemInHand(), block));
 			player.sendNotification("Block set", "", Material.STONE);

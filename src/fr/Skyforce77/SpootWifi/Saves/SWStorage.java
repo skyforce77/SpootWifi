@@ -3,13 +3,16 @@ package fr.Skyforce77.SpootWifi.Saves;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.block.SpoutBlock;
-
+import org.getspout.spoutapi.inventory.SpoutItemStack;
 import fr.Skyforce77.SpootWifi.SpootWifi;
 import fr.Skyforce77.SpootWifi.Materials.Basics.Receiver;
 import fr.Skyforce77.SpootWifi.Materials.Basics.Transmitter;
@@ -17,10 +20,13 @@ import fr.Skyforce77.SpootWifi.WifiPackets.WifiPacket;
 
 import net.minecraft.server.v1_5_R3.NBTBase;
 import net.minecraft.server.v1_5_R3.NBTTagByte;
+import net.minecraft.server.v1_5_R3.NBTTagByteArray;
 import net.minecraft.server.v1_5_R3.NBTTagCompound;
 import net.minecraft.server.v1_5_R3.NBTTagDouble;
 import net.minecraft.server.v1_5_R3.NBTTagFloat;
 import net.minecraft.server.v1_5_R3.NBTTagInt;
+import net.minecraft.server.v1_5_R3.NBTTagIntArray;
+import net.minecraft.server.v1_5_R3.NBTTagList;
 import net.minecraft.server.v1_5_R3.NBTTagLong;
 import net.minecraft.server.v1_5_R3.NBTTagString;
 
@@ -38,6 +44,7 @@ public class SWStorage implements Serializable{
 	private HashMap<String, SWStorage> storages = new HashMap<String, SWStorage>();
 
 	public SWStorage(WifiPacket packet) {}
+	public SWStorage() {}
 		
 	public SWStorage(Block b) {
 		Location loc = b.getLocation();
@@ -46,6 +53,44 @@ public class SWStorage implements Serializable{
 		doubles.put("z", loc.getZ());
 		strings.put("world", b.getWorld().getName());
 		integers.put("StorageType",0);
+	};
+	
+	public SWStorage(ItemStack is) {
+		NBTTagCompound nbt = ItemSave.getNBT(is);
+		for(Object o : nbt.c().toArray()) {
+			NBTBase base = (NBTBase)o;
+			String s = base.getName();
+			if(base instanceof NBTTagByte) {
+				bytes.put(s, ((NBTTagByte)base).data);
+			} else if(base instanceof NBTTagString) {
+				strings.put(s, ((NBTTagString)base).data);
+			} else if(base instanceof NBTTagCompound) {
+				storages.put(s, new SWStorage((NBTTagCompound)base));
+			} else if(base instanceof NBTTagInt) {
+				integers.put(s, ((NBTTagInt)base).data);
+			} else if(base instanceof NBTTagLong) {
+				longs.put(s, ((NBTTagLong)base).data);
+			} else if(base instanceof NBTTagDouble) {
+				doubles.put(s, ((NBTTagDouble)base).data);
+			} else if(base instanceof NBTTagFloat) {
+				floats.put(s, ((NBTTagFloat)base).data);
+			} else if(base instanceof NBTTagByteArray) {
+				objects.put(s, ((NBTTagByteArray)base));
+			} else if(base instanceof NBTTagIntArray) {
+				objects.put(s, ((NBTTagIntArray)base));
+			} else if(base instanceof NBTTagList) {
+				objects.put(s, ((NBTTagList)base));
+			} else {
+				objects.put(s, base);
+			}
+		}
+		integers.put("StorageType",1);
+		
+		if(!storages.containsKey("display")) {
+			storages.put("display", new SWStorage());
+		} 
+		
+		storages.get("display").addString("Name",ChatColor.RESET+""+ChatColor.GOLD+new SpoutItemStack(is).getMaterial().getName());
 	};
 	
 	public SWStorage(NBTTagCompound nbt) {
@@ -66,9 +111,17 @@ public class SWStorage implements Serializable{
 				doubles.put(s, ((NBTTagDouble)base).data);
 			} else if(base instanceof NBTTagFloat) {
 				floats.put(s, ((NBTTagFloat)base).data);
+			} else if(base instanceof NBTTagByteArray) {
+				objects.put(s, ((NBTTagByteArray)base));
+			} else if(base instanceof NBTTagIntArray) {
+				objects.put(s, ((NBTTagIntArray)base));
+			} else if(base instanceof NBTTagList) {
+				objects.put(s, ((NBTTagList)base));
+			} else {
+				objects.put(s, base);
 			}
 		}
-		integers.put("StorageType",1);
+		integers.put("StorageType",2);
 	};
 	
 	public void addObject(String key, Object value)
@@ -104,6 +157,25 @@ public class SWStorage implements Serializable{
 	public void addByte(String key, Byte value)
 	{
 		bytes.put(key,value);
+	}
+	
+	public void addByteArray(String key, byte[] value)
+	{
+		objects.put(key,new NBTTagByteArray(key, value));
+	}
+	
+	public void addIntArray(String key, int[] value)
+	{
+		objects.put(key,new NBTTagIntArray(key, value));
+	}
+	
+	public void addList(String key, List<NBTBase> value)
+	{
+		NBTTagList list = new NBTTagList(key);
+		for(NBTBase base : value) {
+			list.add(base);
+		}
+		objects.put(key,list);
 	}
 	
 	public void addSWStorage(String key, SWStorage value)
@@ -188,6 +260,42 @@ public class SWStorage implements Serializable{
 		}
 	}
 	
+	public byte[] getByteArray(String key)
+	{
+		if(objects.containsKey(key) && objects.get(key) instanceof NBTTagByteArray)
+		{
+			return ((NBTTagByteArray)objects.get(key)).data;
+		}
+		else
+		{
+			return new byte[0];
+		}
+	}
+	
+	public int[] getIntArray(String key)
+	{
+		if(objects.containsKey(key) && objects.get(key) instanceof NBTTagIntArray)
+		{
+			return ((NBTTagIntArray)objects.get(key)).data;
+		}
+		else
+		{
+			return new int[0];
+		}
+	}
+	
+	public NBTTagList getList(String key)
+	{
+		if(objects.containsKey(key) && objects.get(key) instanceof NBTTagList)
+		{
+			return ((NBTTagList)objects.get(key));
+		}
+		else
+		{
+			return new NBTTagList();
+		}
+	}
+	
 	public SWStorage getSWStorage(String key)
 	{
 		if(storages.containsKey(key))
@@ -203,6 +311,16 @@ public class SWStorage implements Serializable{
 	public boolean isBlockStorage()
 	{
 		return getInteger("StorageType") == 0;
+	}
+	
+	public boolean isItemStackStorage()
+	{
+		return getInteger("StorageType") == 1;
+	}
+	
+	public boolean isNBTTagStorage()
+	{
+		return getInteger("StorageType") == 2;
 	}
 	
 	public Block getBlock()
@@ -250,6 +368,23 @@ public class SWStorage implements Serializable{
 	public NBTTagCompound toNBT() {
 		NBTTagCompound tag = new NBTTagCompound();
 		
+		if(isItemStackStorage()) {
+			ArrayList<NBTBase> lore = new ArrayList<NBTBase>();
+			lore.add(new NBTTagString("", ChatColor.RESET+"Channel: "+getInteger("SpootWifiChannel")));
+			
+			if(integers.containsKey("x") && integers.containsKey("y") && integers.containsKey("z")) {
+				lore.add(new NBTTagString("", ChatColor.RESET+"Block: "+getInteger("x")+";"+getInteger("y")+";"+getInteger("z")));
+			}
+			
+			if(doubles.containsKey("x")) {
+				doubles.remove("x");
+				doubles.remove("y");
+				doubles.remove("z");
+			}
+			
+			storages.get("display").addList("Lore", lore);
+		}
+		
 		for(String s : this.bytes.keySet()) {
 			tag.setByte(s, this.bytes.get(s));
 		}
@@ -276,6 +411,10 @@ public class SWStorage implements Serializable{
 			tag.setString(s, this.strings.get(s));
 		}
 		
+		if(!storages.containsKey("display")) {
+			storages.put("display", new SWStorage());
+		} 
+		
 		return tag;
 
 	}
@@ -291,7 +430,7 @@ public class SWStorage implements Serializable{
 				SpootWifi.storage.getSWBlock(getBlock()).addStorage(this);
 			}
 		}
-		else
+		else if(isItemStackStorage())
 		{
 			p.setItemInHand(ItemSave.setNBT(p.getItemInHand(), this));
 		}

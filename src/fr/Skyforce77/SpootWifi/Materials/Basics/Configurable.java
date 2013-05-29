@@ -9,7 +9,6 @@ import org.getspout.spoutapi.material.block.GenericCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import fr.Skyforce77.SpootWifi.GUI.ChooseGui;
-import fr.Skyforce77.SpootWifi.Saves.ItemSave;
 import fr.Skyforce77.SpootWifi.Saves.SWStorage;
 
 public class Configurable extends GenericCustomBlock{
@@ -115,7 +114,7 @@ public class Configurable extends GenericCustomBlock{
 		if(hasgui)
 		{
 			try {
-				gui.getConstructor(String.class, SpoutPlayer.class, SWStorage.class).newInstance(this.getName(), (SpoutPlayer)player, new SWStorage(ItemSave.getNBT(item)));
+				gui.getConstructor(String.class, SpoutPlayer.class, SWStorage.class).newInstance(this.getName(), (SpoutPlayer)player, new SWStorage(item));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

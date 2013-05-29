@@ -9,7 +9,6 @@ import fr.Skyforce77.SpootWifi.Saves.SWStorage;
 public class ValueSlider extends GenericSlider{
 
 	SWStorage storage;
-	Player p;
 	String label;
 	
 	public ValueSlider(Player p, SWStorage storage, String label)
@@ -22,10 +21,13 @@ public class ValueSlider extends GenericSlider{
 	
 	@Override
 	public void onSliderDrag(SliderDragEvent event) {
-		storage.addFloat(label, event.getNewPosition());
-		
-		storage.sync(p);
-		setText(label+": "+((int)(getSliderPosition()*100))+"%");
+		if(storage != null && label != null) {
+			storage.addFloat(label, event.getNewPosition());
+			storage.sync(event.getPlayer());
+			setText(label+": "+((int)(getSliderPosition()*100))+"%");
+			setVisible(false);
+			setVisible(true);
+		}
 		super.onSliderDrag(event);
 	}
 

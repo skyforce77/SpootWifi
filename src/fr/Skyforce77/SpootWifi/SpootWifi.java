@@ -1,9 +1,12 @@
 package fr.Skyforce77.SpootWifi;
 
 import java.io.IOException;
+
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,6 +18,7 @@ import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -27,6 +31,7 @@ import org.getspout.spoutapi.material.CustomItem;
 import org.getspout.spoutapi.material.item.GenericCustomItem;
 import org.mcstats.Metrics;
 
+import fr.Skyforce77.SpootWifi.Entity.SWEntityItem;
 import fr.Skyforce77.SpootWifi.Materials.Basics.Configurable;
 import fr.Skyforce77.SpootWifi.Materials.Basics.Receiver;
 import fr.Skyforce77.SpootWifi.Materials.Basics.Remote;
@@ -149,9 +154,9 @@ public class SpootWifi extends JavaPlugin implements Listener{
 		transmittereffect = new EffectTransmitter(this, "Wireless Effect Transmitter");
 		randomcolordiode = new RandomDiode(this, "Random Color Diode");
 		randomcolorpixel = new RandomPixel(this, "Random Color Pixel");
-		transmitterparticle = new ParticleTransmitter(this, "Wireless Particle Transmiter");
+		transmitterparticle = new ParticleTransmitter(this, "Wireless Particle Transmitter");
 		receiverparticle = new ReceiverParticle(this, "Wireless Particle Receiver");
-		new SoundTransmitter(this, "Wireless Sound Transmiter");
+		new SoundTransmitter(this, "Wireless Sound Transmitter");
 		
 		getServer().getPluginManager().registerEvents(this, this);
 		RecipesManager.createRecipes();
@@ -183,20 +188,20 @@ public class SpootWifi extends JavaPlugin implements Listener{
 				if(block.getCustomBlock() instanceof Transmitter)
 				{
 					save.addTransmitter(ItemSave.getChannel(e.getPlayer().getItemInHand()), block, e.getPlayer());
-					save.getChannel(block).getSWBlock(block).getStorage().add(new SWStorage(ItemSave.getNBT(e.getPlayer().getItemInHand())));
+					save.getChannel(block).getSWBlock(block).getStorage().add(new SWStorage(e.getPlayer().getItemInHand()));
 				}
 				else if(block.getCustomBlock() instanceof Receiver)
 				{
 					save.addReceiver(ItemSave.getChannel(e.getPlayer().getItemInHand()), block, e.getPlayer());
-					save.getChannel(block).getSWBlock(block).getStorage().add(new SWStorage(ItemSave.getNBT(e.getPlayer().getItemInHand())));
+					save.getChannel(block).getSWBlock(block).getStorage().add(new SWStorage(e.getPlayer().getItemInHand()));
 				}
 				else
 				{
 					storage.addBlock(block);
-					storage.getSWBlock(block).getStorage().add(new SWStorage(ItemSave.getNBT(e.getPlayer().getItemInHand())));
+					storage.getSWBlock(block).getStorage().add(new SWStorage(e.getPlayer().getItemInHand()));
 				}
 				
-				((Configurable)block.getCustomBlock()).onPlaced(block, e.getPlayer(), new SWStorage(ItemSave.getNBT(e.getPlayer().getItemInHand())));
+				((Configurable)block.getCustomBlock()).onPlaced(block, e.getPlayer(), new SWStorage(e.getPlayer().getItemInHand()));
 				
 				if(ItemSave.getOption(e.getPlayer().getItemInHand(), "AutoChannel") == 1)
 				{
@@ -220,20 +225,34 @@ public class SpootWifi extends JavaPlugin implements Listener{
 			}
 			
 			if(block.getCustomBlock() instanceof Configurable) {
+				SWStorage sws = new SWStorage();
 				if(block.getCustomBlock() instanceof Transmitter)
 				{
+					sws = save.getChannel(block).getSWBlock(block).getStorage();
 					((Configurable)block.getCustomBlock()).onBreaked(block, e.getPlayer(), save.getChannel(block).getSWBlock(block).getStorage());
 					save.rmvTransmitter(block);
 				}
 				else if(block.getCustomBlock() instanceof  Receiver)
 				{
+					sws = save.getChannel(block).getSWBlock(block).getStorage();
 					((Configurable)block.getCustomBlock()).onBreaked(block, e.getPlayer(), save.getChannel(block).getSWBlock(block).getStorage());
 					save.rmvReceiver(block);
 				}
 				else
 				{
+					sws = storage.getSWBlock(block).getStorage();
 					((Configurable)block.getCustomBlock()).onBreaked(block, e.getPlayer(), storage.getSWBlock(block).getStorage());
 					storage.removeBlock(block);
+				}
+				
+				if(!e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
+					Item i = (Item)new SWEntityItem(e.getBlock().getWorld(), e.getBlock().getLocation().add(0.5,0.5,0.5), new SpoutItemStack(block.getCustomBlock())).getBukkitEntity();
+					e.setCancelled(true);
+					e.getBlock().breakNaturally(new ItemStack(0));
+					SpoutManager.getMaterialManager().removeBlockOverride(block);
+					SWStorage itemstorage = new SWStorage(i.getItemStack());
+					itemstorage.add(sws);
+					i.setItemStack(ItemSave.setNBT(i.getItemStack(), itemstorage));
 				}
 			}
 		}
