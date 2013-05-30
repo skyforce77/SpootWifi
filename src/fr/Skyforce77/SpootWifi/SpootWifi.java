@@ -1,7 +1,10 @@
 package fr.Skyforce77.SpootWifi;
 
 import java.io.IOException;
+import java.util.HashMap;
+
 import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
 import org.bukkit.GameMode;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -102,7 +105,7 @@ public class SpootWifi extends JavaPlugin implements Listener{
 	public static CustomItem sniffer = null;
 	public static CustomItem radio = null;
 	public static CustomItem ironstick = null;
-	public static CustomItem remote = null;
+	public static HashMap<Byte,CustomItem> remote = new HashMap<Byte,CustomItem>();
 	public static CustomItem viewer = null;
 	public static Texture texture = null;
 	public static Plugin plugin;
@@ -148,7 +151,6 @@ public class SpootWifi extends JavaPlugin implements Listener{
 		wirelesslamp = new WirelessLamp(this, "Wireless Redstone Lamp");
 		sniffer = new WirelessSniffer(this, "Wireless Sniffer");
 		radio = new Radio(this, "Radio");
-		remote = new Remote(this, "Wireless Remote", RessourceManager.getTexture("remote.png"));
 		ironstick = new GenericCustomItem(this, "Iron Stick", RessourceManager.getTexture("ironstick.png"));
 		receivereffect = new ReceiverEffect(this, "Wireless Effect Receiver");
 		transmittereffect = new EffectTransmitter(this, "Wireless Effect Transmitter");
@@ -158,6 +160,23 @@ public class SpootWifi extends JavaPlugin implements Listener{
 		receiverparticle = new ReceiverParticle(this, "Wireless Particle Receiver");
 		new SoundTransmitter(this, "Wireless Sound Transmitter");
 		viewer = new GenericCustomItem(this, "Wireless Inventory Viewer", RessourceManager.getTexture("invremote.png"));
+		
+		remote.put(DyeColor.WHITE.getDyeData(), new Remote(this, "Wireless Remote", RessourceManager.getTexture("remote.png")));
+		remote.put(DyeColor.BLACK.getDyeData(), new Remote(this, "Black Wireless Remote", RessourceManager.getTexture("blackremote.png")));
+		remote.put(DyeColor.BLUE.getDyeData(), new Remote(this, "Blue Wireless Remote", RessourceManager.getTexture("blueremote.png")));
+		remote.put(DyeColor.BROWN.getDyeData(), new Remote(this, "Brown Wireless Remote", RessourceManager.getTexture("brownremote.png")));
+		remote.put(DyeColor.CYAN.getDyeData(), new Remote(this, "Cyan Wireless Remote", RessourceManager.getTexture("cyanremote.png")));
+		remote.put(DyeColor.GRAY.getDyeData(), new Remote(this, "Gray Wireless Remote", RessourceManager.getTexture("grayremote.png")));
+		remote.put(DyeColor.GREEN.getDyeData(), new Remote(this, "Green Wireless Remote", RessourceManager.getTexture("greenremote.png")));
+		remote.put(DyeColor.LIGHT_BLUE.getDyeData(), new Remote(this, "Light Blue Wireless Remote", RessourceManager.getTexture("lightblueremote.png")));
+		remote.put(DyeColor.SILVER.getDyeData(), new Remote(this, "Light Gray Wireless Remote", RessourceManager.getTexture("lightgrayremote.png")));
+		remote.put(DyeColor.LIME.getDyeData(), new Remote(this, "Lime Wireless Remote", RessourceManager.getTexture("limeremote.png")));
+		remote.put(DyeColor.MAGENTA.getDyeData(), new Remote(this, "Magenta Wireless Remote", RessourceManager.getTexture("magentaremote.png")));
+		remote.put(DyeColor.ORANGE.getDyeData(), new Remote(this, "Orange Wireless Remote", RessourceManager.getTexture("orangeremote.png")));
+		remote.put(DyeColor.PINK.getDyeData(), new Remote(this, "Pink Wireless Remote", RessourceManager.getTexture("pinkremote.png")));
+		remote.put(DyeColor.PURPLE.getDyeData(), new Remote(this, "Purple Wireless Remote", RessourceManager.getTexture("purpleremote.png")));
+		remote.put(DyeColor.RED.getDyeData(), new Remote(this, "Red Wireless Remote", RessourceManager.getTexture("redremote.png")));
+		remote.put(DyeColor.YELLOW.getDyeData(), new Remote(this, "Yellow Wireless Remote", RessourceManager.getTexture("yellowremote.png")));
 		
 		getServer().getPluginManager().registerEvents(this, this);
 		RecipesManager.createRecipes();

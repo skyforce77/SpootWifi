@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -15,6 +16,7 @@ import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
 import fr.Skyforce77.SpootWifi.SpootWifi;
 import fr.Skyforce77.SpootWifi.Materials.Basics.Receiver;
+import fr.Skyforce77.SpootWifi.Materials.Basics.Remote;
 import fr.Skyforce77.SpootWifi.Materials.Basics.Transmitter;
 import fr.Skyforce77.SpootWifi.WifiPackets.WifiPacket;
 
@@ -85,10 +87,17 @@ public class SWStorage implements Serializable{
 			}
 		}
 		integers.put("StorageType",1);
+		integers.put("ItemId", is.getTypeId());
+		integers.put("ItemData", Integer.parseInt(is.getDurability()+""));
 		
 		if(!storages.containsKey("display")) {
 			storages.put("display", new SWStorage());
-			storages.get("display").addString("Name",ChatColor.RESET+""+ChatColor.GOLD+new SpoutItemStack(is).getMaterial().getName());
+			SpoutItemStack sis = new SpoutItemStack(is);
+			if(sis.getMaterial() instanceof Remote) {
+				storages.get("display").addString("Name",ChatColor.RESET+""+ChatColor.GOLD+"Wireless Remote");
+			} else {
+				storages.get("display").addString("Name",ChatColor.RESET+""+ChatColor.GOLD+new SpoutItemStack(is).getMaterial().getName());
+			}
 		}
 	};
 	
@@ -369,7 +378,11 @@ public class SWStorage implements Serializable{
 		
 		if(isItemStackStorage()) {
 			ArrayList<NBTBase> lore = new ArrayList<NBTBase>();
+			SpoutItemStack sis = new SpoutItemStack(integers.get("ItemId"), Short.parseShort(integers.get("ItemData")+""));
 			
+			if(bytes.containsKey("Dyed") || (sis.getMaterial() instanceof Remote && !sis.getMaterial().equals(SpootWifi.remote.get(DyeColor.WHITE.getDyeData())))) {
+				lore.add(new NBTTagString("", ChatColor.GRAY+""+ChatColor.ITALIC+"Dyed"));
+			}
 			if(integers.containsKey("SpootWifiChannel")) {
 				lore.add(new NBTTagString("", ChatColor.RESET+"Channel: "+getInteger("SpootWifiChannel")));
 			}

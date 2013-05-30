@@ -1,31 +1,56 @@
 package fr.Skyforce77.SpootWifi;
 
+import org.bukkit.DyeColor;
+import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.inventory.SpoutShapedRecipe;
+import org.getspout.spoutapi.inventory.SpoutShapelessRecipe;
+import org.getspout.spoutapi.material.CustomItem;
 import org.getspout.spoutapi.material.MaterialData;
+
+import fr.Skyforce77.SpootWifi.Saves.ItemSave;
+import fr.Skyforce77.SpootWifi.Saves.SWStorage;
 
 public class RecipesManager {
 
 	public static void createRecipes()
 	{
-		SpoutShapedRecipe remote = new SpoutShapedRecipe(new SpoutItemStack(SpootWifi.remote))
+		SpoutShapedRecipe remote = new SpoutShapedRecipe(ItemSave.setNBT(new SpoutItemStack(SpootWifi.remote.get(DyeColor.WHITE.getDyeData())),
+				new SWStorage(new SpoutItemStack(SpootWifi.remote.get(DyeColor.WHITE.getDyeData())))))
 		.shape("A","B")
 		.setIngredient('B', MaterialData.ironIngot)
 		.setIngredient('A', MaterialData.redstoneTorchOn);
 		SpoutManager.getMaterialManager().registerSpoutRecipe(remote);
 		
-		SpoutShapedRecipe sniffer = new SpoutShapedRecipe(new SpoutItemStack(SpootWifi.sniffer))
-		.shape("ABA")
-		.setIngredient('A', MaterialData.redstoneTorchOn)
-		.setIngredient('B', SpootWifi.remote);
-		SpoutManager.getMaterialManager().registerSpoutRecipe(sniffer);
+		for(CustomItem rm : SpootWifi.remote.values()) {
+			SpoutShapedRecipe sniffer = new SpoutShapedRecipe(new SpoutItemStack(SpootWifi.sniffer))
+			.shape("ABA")
+			.setIngredient('A', MaterialData.redstoneTorchOn)
+			.setIngredient('B', rm);
+			SpoutManager.getMaterialManager().registerSpoutRecipe(sniffer);
 		
-		SpoutShapedRecipe viewer = new SpoutShapedRecipe(new SpoutItemStack(SpootWifi.viewer))
-		.shape("B","A")
-		.setIngredient('A', MaterialData.chest)
-		.setIngredient('B', SpootWifi.remote);
-		SpoutManager.getMaterialManager().registerSpoutRecipe(viewer);
+			SpoutShapedRecipe viewer = new SpoutShapedRecipe(new SpoutItemStack(SpootWifi.viewer))
+			.shape("B","A")
+			.setIngredient('A', MaterialData.chest)
+			.setIngredient('B', rm);
+			SpoutManager.getMaterialManager().registerSpoutRecipe(viewer);
+		}
+		
+		for(DyeColor color : DyeColor.values()) {
+			CustomItem rm = SpootWifi.remote.get(color.getDyeData());
+			for(CustomItem rm2 : SpootWifi.remote.values()) {
+				if(!rm2.equals(rm)) {
+					ItemStack sis = new SpoutItemStack(rm);
+					SWStorage storage = new SWStorage(sis);				
+					sis = ItemSave.setNBT(sis, storage);
+					SpoutShapelessRecipe rmr = new SpoutShapelessRecipe(sis)
+					.addIngredient(1, rm2)
+					.addIngredient(1, MaterialData.getMaterial(351, color.getDyeData()));
+					SpoutManager.getMaterialManager().registerSpoutRecipe(rmr);
+				}
+			}
+		}
 		
 		SpoutShapedRecipe ironstick = new SpoutShapedRecipe(new SpoutItemStack(SpootWifi.ironstick, 4))
 		.shape("A","A")
