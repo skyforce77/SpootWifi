@@ -1,7 +1,6 @@
 package fr.Skyforce77.SpootWifi.Entity;
 
 import java.lang.reflect.Method;
-
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_5_R3.CraftWorld;
@@ -24,7 +23,7 @@ public class SWEntityItem extends EntityItem{
 	
 	@Override
 	public void l_() {
-		CustomEffect.createEffect(ParticleType.WITCH_MAGIC, this.getBukkitEntity().getLocation(), new Vector(0.1,0.1,0.1), 0.1F, 1, 1);
+		CustomEffect.createEffect(ParticleType.TOWN_AURA, this.getBukkitEntity().getLocation().add(0.2,0,0.2), new Vector(0.2,0.2,0.2), 0.00001F, 2, 1);
 		super.l_();
 	}
 

@@ -109,6 +109,16 @@ public class ItemSave {
 		return setNBT(is, data);
 	}
 	
+	public static ItemStack removeBlock(ItemStack is)
+	{
+		SWStorage data = new SWStorage(is);
+		data.removeAll("x");
+		data.removeAll("y");
+		data.removeAll("z");
+		data.removeAll("world");
+		return setNBT(is, data);
+	}
+	
 	public static ItemStack setName(ItemStack is, String name)
 	{
 		SWStorage data = new SWStorage(is);

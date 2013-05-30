@@ -1,7 +1,6 @@
 package fr.Skyforce77.SpootWifi;
 
 import java.io.IOException;
-
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.block.Block;

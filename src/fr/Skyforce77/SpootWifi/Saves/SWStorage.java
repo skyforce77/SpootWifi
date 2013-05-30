@@ -88,9 +88,8 @@ public class SWStorage implements Serializable{
 		
 		if(!storages.containsKey("display")) {
 			storages.put("display", new SWStorage());
-		} 
-		
-		storages.get("display").addString("Name",ChatColor.RESET+""+ChatColor.GOLD+new SpoutItemStack(is).getMaterial().getName());
+			storages.get("display").addString("Name",ChatColor.RESET+""+ChatColor.GOLD+new SpoutItemStack(is).getMaterial().getName());
+		}
 	};
 	
 	public SWStorage(NBTTagCompound nbt) {
@@ -358,7 +357,7 @@ public class SWStorage implements Serializable{
 		
 		for(Object s : maps.get(3).keySet())
 		{
-			if(!((String)s).equals("StorageType"))
+			if(!((String)s).equals("StorageType") && !((String)s).equals("world") && !((String)s).equals("x") && !((String)s).equals("y") && !((String)s).equals("z"))
 			{
 				integers.put((String)s, (Integer)maps.get(3).get(s));
 			}
@@ -433,6 +432,14 @@ public class SWStorage implements Serializable{
 		else if(isItemStackStorage())
 		{
 			p.setItemInHand(ItemSave.setNBT(p.getItemInHand(), this));
+		}
+	}
+	
+	public void removeAll(String key) {
+		for(HashMap<?, ?> map : getValues()) {
+			if(map.containsKey(key)) {
+				map.remove(key);
+			}
 		}
 	}
 
