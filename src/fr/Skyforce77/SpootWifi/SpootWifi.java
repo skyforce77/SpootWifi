@@ -103,6 +103,7 @@ public class SpootWifi extends JavaPlugin implements Listener{
 	public static CustomItem radio = null;
 	public static CustomItem ironstick = null;
 	public static CustomItem remote = null;
+	public static CustomItem viewer = null;
 	public static Texture texture = null;
 	public static Plugin plugin;
 	public static boolean JukeIt = false;
@@ -156,6 +157,7 @@ public class SpootWifi extends JavaPlugin implements Listener{
 		transmitterparticle = new ParticleTransmitter(this, "Wireless Particle Transmitter");
 		receiverparticle = new ReceiverParticle(this, "Wireless Particle Receiver");
 		new SoundTransmitter(this, "Wireless Sound Transmitter");
+		viewer = new GenericCustomItem(this, "Wireless Inventory Viewer", RessourceManager.getTexture("invremote.png"));
 		
 		getServer().getPluginManager().registerEvents(this, this);
 		RecipesManager.createRecipes();

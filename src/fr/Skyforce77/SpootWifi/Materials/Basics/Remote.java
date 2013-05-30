@@ -3,12 +3,14 @@ package fr.Skyforce77.SpootWifi.Materials.Basics;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.Chest;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.Plugin;
 import org.getspout.spoutapi.block.SpoutBlock;
+import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.material.item.GenericCustomItem;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
+import fr.Skyforce77.SpootWifi.SpootWifi;
 import fr.Skyforce77.SpootWifi.Saves.ItemSave;
 
 public class Remote extends GenericCustomItem{
@@ -28,10 +30,15 @@ public class Remote extends GenericCustomItem{
 			player.setItemInHand(ItemSave.setBlock(player.getItemInHand(), block));
 			player.sendNotification("Block set", "", Material.STONE);
 		}
-		else if(player.isSneaking() && block.getType().equals(Material.CHEST))
+		else if(player.isSneaking() && block.getState() instanceof InventoryHolder)
 		{
-			player.setItemInHand(ItemSave.setBlock(player.getItemInHand(), block));
-			player.sendNotification("Block set", "", Material.STONE);
+			InventoryHolder chest = (InventoryHolder)block.getState();
+			if(chest.getInventory().contains(new SpoutItemStack(SpootWifi.viewer), 1)) {
+				player.setItemInHand(ItemSave.setBlock(player.getItemInHand(), block));
+				player.sendNotification("Block set", "", Material.STONE);
+			} else {
+				player.sendMessage(ChatColor.RED+"Unable to access to that block. Receiver not detected.");
+			}
 		}
 		else if(ItemSave.getBlock(player.getItemInHand()) != null && ((SpoutBlock)ItemSave.getBlock(player.getItemInHand())).getCustomBlock() != null && ((SpoutBlock)ItemSave.getBlock(player.getItemInHand())).getCustomBlock() instanceof Transmitter)
 		{
@@ -46,15 +53,17 @@ public class Remote extends GenericCustomItem{
 			{
 				t.onPowered(sb, true);
 				t.onPowered(sb, false);
-			}
+			}    
 		}
-		else if(ItemSave.getBlock(player.getItemInHand()) != null && ItemSave.getBlock(player.getItemInHand()).getType().equals(Material.CHEST))
+		else if(ItemSave.getBlock(player.getItemInHand()) != null && ItemSave.getBlock(player.getItemInHand()).getState() instanceof InventoryHolder)
 		{
 			SpoutBlock sb = (SpoutBlock)ItemSave.getBlock(player.getItemInHand());
-			Chest chest = (Chest)(sb.getState());
-			if(!player.isSneaking())
+			InventoryHolder chest = (InventoryHolder)(sb.getState());
+			if(!player.isSneaking() && chest.getInventory().contains(new SpoutItemStack(SpootWifi.viewer), 1))
 			{
 				player.openInventory(chest.getInventory());
+			} else if(!player.isSneaking()) {
+				player.sendMessage(ChatColor.RED+"Unable to access to that block. Receiver not detected.");
 			}
 		}
 		else if(ItemSave.getBlock(player.getItemInHand()) != null) {

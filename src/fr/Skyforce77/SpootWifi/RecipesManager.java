@@ -21,6 +21,12 @@ public class RecipesManager {
 		.setIngredient('B', SpootWifi.remote);
 		SpoutManager.getMaterialManager().registerSpoutRecipe(sniffer);
 		
+		SpoutShapedRecipe viewer = new SpoutShapedRecipe(new SpoutItemStack(SpootWifi.viewer))
+		.shape("B","A")
+		.setIngredient('A', MaterialData.chest)
+		.setIngredient('B', SpootWifi.remote);
+		SpoutManager.getMaterialManager().registerSpoutRecipe(viewer);
+		
 		SpoutShapedRecipe ironstick = new SpoutShapedRecipe(new SpoutItemStack(SpootWifi.ironstick, 4))
 		.shape("A","A")
 		.setIngredient('A', MaterialData.ironIngot);

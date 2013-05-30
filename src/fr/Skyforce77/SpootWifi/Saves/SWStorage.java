@@ -369,8 +369,10 @@ public class SWStorage implements Serializable{
 		
 		if(isItemStackStorage()) {
 			ArrayList<NBTBase> lore = new ArrayList<NBTBase>();
-			lore.add(new NBTTagString("", ChatColor.RESET+"Channel: "+getInteger("SpootWifiChannel")));
 			
+			if(integers.containsKey("SpootWifiChannel")) {
+				lore.add(new NBTTagString("", ChatColor.RESET+"Channel: "+getInteger("SpootWifiChannel")));
+			}
 			if(integers.containsKey("x") && integers.containsKey("y") && integers.containsKey("z")) {
 				lore.add(new NBTTagString("", ChatColor.RESET+"Block: "+getInteger("x")+";"+getInteger("y")+";"+getInteger("z")));
 			}
