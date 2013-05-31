@@ -387,7 +387,8 @@ public class SWStorage implements Serializable{
 				lore.add(new NBTTagString("", ChatColor.RESET+"Channel: "+getInteger("SpootWifiChannel")));
 			}
 			if(integers.containsKey("x") && integers.containsKey("y") && integers.containsKey("z")) {
-				lore.add(new NBTTagString("", ChatColor.RESET+"Block: "+getInteger("x")+";"+getInteger("y")+";"+getInteger("z")));
+				SpoutBlock sb = (SpoutBlock)new Location(Bukkit.getWorld(getString("world")),getInteger("x"),getInteger("y"),getInteger("z")).getBlock();
+				lore.add(new NBTTagString("", ChatColor.RESET+"Block: "+sb.getBlockType().getName()));
 			}
 			
 			if(doubles.containsKey("x")) {

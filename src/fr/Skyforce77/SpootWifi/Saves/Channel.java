@@ -164,12 +164,12 @@ public class Channel implements Serializable{
 	
 	public void update(World w)
 	{
+		boolean active = isActive();
 		if(!SpootWifi.plugin.getConfig().getBoolean("wifi_through_worlds")) {
-			updateWorld(w);
+			updateWorld(w, active);
 			return;
 		}
 		
-		boolean active = isActive();
 		for(SWBlock b : receivers)
 		{
 			SpootWifi.setPoweredBlock((SpoutBlock)b.getBlock(), active);
@@ -192,9 +192,37 @@ public class Channel implements Serializable{
 		}
 	}
 	
-	public void updateWorld(World w)
+	public void update(World w, boolean active)
 	{
-		boolean active = isActive(w);
+		if(!SpootWifi.plugin.getConfig().getBoolean("wifi_through_worlds")) {
+			updateWorld(w, active);
+			return;
+		}
+		
+		for(SWBlock b : receivers)
+		{
+			SpootWifi.setPoweredBlock((SpoutBlock)b.getBlock(), active);
+		}
+		
+		for(Player sp : Bukkit.getServer().getOnlinePlayers())
+		{
+			for(ItemStack is : sp.getInventory().getContents())
+			{
+				if(is != null)
+				{
+					SpoutItemStack sis = new SpoutItemStack(is);
+					if(sis.isCustomItem() && sis.getMaterial() instanceof ItemReceiver && ItemSave.getChannel(is).equals(this.channel))
+					{
+						ItemReceiver ir = (ItemReceiver)sis.getMaterial();
+						ir.onPowered((SpoutPlayer)sp, is, active);
+					}
+				}
+			}
+		}
+	}
+	
+	public void updateWorld(World w, boolean active)
+	{
 		for(SWBlock b : receivers)
 		{
 			if(b.getBlock().getLocation().getWorld().getName().equals(w.getName()))

@@ -27,10 +27,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.block.design.Texture;
+import org.getspout.spoutapi.event.input.KeyReleasedEvent;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
+import org.getspout.spoutapi.keyboard.Keyboard;
 import org.getspout.spoutapi.material.CustomBlock;
 import org.getspout.spoutapi.material.CustomItem;
 import org.getspout.spoutapi.material.item.GenericCustomItem;
+import org.getspout.spoutapi.player.SpoutPlayer;
 import org.mcstats.Metrics;
 
 import fr.Skyforce77.SpootWifi.Entity.SWEntityItem;
@@ -444,6 +447,30 @@ public class SpootWifi extends JavaPlugin implements Listener{
 			if(e.getAction().equals(Action.RIGHT_CLICK_AIR) && sis.getMaterial() instanceof Configurable)
 			{
 				((Configurable)sis.getMaterial()).onRightClick(e.getPlayer(), e.getItem());
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onRemoteClick(PlayerInteractEvent e)
+	{
+		if(e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+			ItemStack is = e.getPlayer().getItemInHand();
+			SpoutItemStack sis = new SpoutItemStack(is);
+			if(is != null && sis.getMaterial() instanceof Remote) {
+				((Remote)sis.getMaterial()).onClick((SpoutPlayer)e.getPlayer(), is, (SpoutBlock)e.getClickedBlock());
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onRemoteUnclick(KeyReleasedEvent e)
+	{
+		if(e.getKey().equals(Keyboard.MOUSE_RIGHT)) {
+			ItemStack is = e.getPlayer().getItemInHand();
+			SpoutItemStack sis = new SpoutItemStack(is);
+			if(is != null && sis.getMaterial() instanceof Remote) {
+				((Remote)sis.getMaterial()).onUnclick((SpoutPlayer)e.getPlayer(), is);
 			}
 		}
 	}
