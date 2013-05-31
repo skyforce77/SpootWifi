@@ -99,6 +99,15 @@ public class SWStorage implements Serializable{
 				storages.get("display").addString("Name",ChatColor.RESET+""+ChatColor.GOLD+new SpoutItemStack(is).getMaterial().getName());
 			}
 		}
+		
+		SpoutItemStack sis = new SpoutItemStack(is);
+		if((sis.getMaterial() instanceof Remote && !sis.getMaterial().equals(SpootWifi.remote.get(DyeColor.WHITE.getDyeData())))) {
+			for(byte b : SpootWifi.remote.keySet()) {
+				if(SpootWifi.remote.get(b).equals(sis.getMaterial())) {
+					bytes.put("WoolColor", DyeColor.getByDyeData(b).getWoolData());
+				}
+			}
+		}
 	};
 	
 	public SWStorage(NBTTagCompound nbt) {
@@ -378,9 +387,8 @@ public class SWStorage implements Serializable{
 		
 		if(isItemStackStorage()) {
 			ArrayList<NBTBase> lore = new ArrayList<NBTBase>();
-			SpoutItemStack sis = new SpoutItemStack(integers.get("ItemId"), Short.parseShort(integers.get("ItemData")+""));
 			
-			if(bytes.containsKey("Dyed") || (sis.getMaterial() instanceof Remote && !sis.getMaterial().equals(SpootWifi.remote.get(DyeColor.WHITE.getDyeData())))) {
+			if(bytes.containsKey("Dyed") || bytes.containsKey("WoolColor")) {
 				lore.add(new NBTTagString("", ChatColor.GRAY+""+ChatColor.ITALIC+"Dyed"));
 			}
 			if(integers.containsKey("SpootWifiChannel")) {

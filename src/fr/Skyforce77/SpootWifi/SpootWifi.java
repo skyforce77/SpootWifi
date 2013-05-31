@@ -19,6 +19,7 @@ import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -27,7 +28,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.block.design.Texture;
+import org.getspout.spoutapi.event.input.KeyPressedEvent;
 import org.getspout.spoutapi.event.input.KeyReleasedEvent;
+import org.getspout.spoutapi.gui.WidgetType;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.keyboard.Keyboard;
 import org.getspout.spoutapi.material.CustomBlock;
@@ -456,9 +459,11 @@ public class SpootWifi extends JavaPlugin implements Listener{
 	{
 		if(e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 			ItemStack is = e.getPlayer().getItemInHand();
-			SpoutItemStack sis = new SpoutItemStack(is);
-			if(is != null && sis.getMaterial() instanceof Remote) {
-				((Remote)sis.getMaterial()).onClick((SpoutPlayer)e.getPlayer(), is, (SpoutBlock)e.getClickedBlock());
+			if(is != null) {
+				SpoutItemStack sis = new SpoutItemStack(is);
+				if(is != null && sis.getMaterial() instanceof Remote) {
+					((Remote)sis.getMaterial()).onClick((SpoutPlayer)e.getPlayer(), is, (SpoutBlock)e.getClickedBlock());
+				}
 			}
 		}
 	}
@@ -468,9 +473,53 @@ public class SpootWifi extends JavaPlugin implements Listener{
 	{
 		if(e.getKey().equals(Keyboard.MOUSE_RIGHT)) {
 			ItemStack is = e.getPlayer().getItemInHand();
+			if(is != null) {
+				SpoutItemStack sis = new SpoutItemStack(is);
+				if(sis.getMaterial() instanceof Remote) {
+					((Remote)sis.getMaterial()).onUnclick((SpoutPlayer)e.getPlayer(), is);
+				}
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onItemDropped(KeyPressedEvent e)
+	{
+		if(e.getKey().equals(e.getPlayer().getDropItemKey()) && e.getPlayer().getItemInHand() != null && e.getPlayer().getCurrentScreen().getType().equals(WidgetType.InGameScreen)) {
+			ItemStack is = e.getPlayer().getItemInHand();
 			SpoutItemStack sis = new SpoutItemStack(is);
-			if(is != null && sis.getMaterial() instanceof Remote) {
-				((Remote)sis.getMaterial()).onUnclick((SpoutPlayer)e.getPlayer(), is);
+			if(sis.getMaterial() instanceof CustomItem) {
+				if(((CustomItem)sis.getMaterial()).getPlugin().equals(SpootWifi.plugin)) {
+					Item i = (Item)new SWEntityItem(e.getPlayer().getWorld(), e.getPlayer().getEyeLocation(), e.getPlayer().getItemInHand()).getBukkitEntity();
+					e.getPlayer().setItemInHand(new ItemStack(0));
+					i.setPickupDelay(20);
+					i.setVelocity(e.getPlayer().getEyeLocation().getDirection().multiply(0.5));
+				}
+			}
+			if(sis.getMaterial() instanceof CustomBlock) {
+				if(((CustomBlock)sis.getMaterial()).getPlugin().equals(SpootWifi.plugin)) {
+					Item i = (Item)new SWEntityItem(e.getPlayer().getWorld(), e.getPlayer().getEyeLocation(), e.getPlayer().getItemInHand()).getBukkitEntity();
+					e.getPlayer().setItemInHand(new ItemStack(0));
+					i.setPickupDelay(20);
+					i.setVelocity(e.getPlayer().getEyeLocation().getDirection().multiply(0.5));
+				}
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onPlayerItemDropped(PlayerDropItemEvent e)
+	{
+		ItemStack is = e.getItemDrop().getItemStack();
+		SpoutItemStack sis = new SpoutItemStack(is);
+		if(sis.getMaterial() instanceof CustomItem) {
+			if(((CustomItem)sis.getMaterial()).getPlugin().equals(SpootWifi.plugin)) {
+				e.setCancelled(true);
+			}
+		}
+		if(sis.getMaterial() instanceof CustomBlock) {
+			if(((CustomBlock)sis.getMaterial()).getPlugin().equals(SpootWifi.plugin)) {
+				e.setCancelled(true);
 			}
 		}
 	}
