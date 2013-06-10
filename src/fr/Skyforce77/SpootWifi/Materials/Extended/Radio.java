@@ -28,15 +28,25 @@ public class Radio extends ItemReceiver{
 			MusicPacket packet = (MusicPacket)wp;
 			SpoutManager.getSoundManager().playCustomMusic(SpootWifi.plugin, p, packet.getMusic(), true, null, -1, (int)(packet.getPower()*100));
 		}
-		if(wp instanceof NotificationPacket)
+		else if(wp instanceof NotificationPacket)
 		{
 			NotificationPacket packet = (NotificationPacket)wp;
 			p.sendNotification(getString(packet.getTitle(), p, packet.getRender()), getString(packet.getText(), p, packet.getRender()), packet.getRender(), packet.getTime());
 		}
-		if(wp instanceof SoundEffectPacket)
+		else if(wp instanceof SoundEffectPacket)
 		{
 			SoundEffectPacket packet = (SoundEffectPacket)wp;
 			SpoutManager.getSoundManager().playSoundEffect(p, packet.getEffect());
+		}
+		else if(wp instanceof SoundPacket)
+		{
+			try
+			{
+				SoundPacket mp = (SoundPacket)wp;
+				Location loc = p.getLocation().add(0.5,0.5,0.5);
+				loc.getWorld().playSound(loc, mp.getSound(), mp.getVolume(), mp.getHigh());
+			}
+		catch(Exception e){}
 		}
 		super.onPacketReceived(wp, is, p);
 	}
