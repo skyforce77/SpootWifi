@@ -12,7 +12,7 @@ import fr.Skyforce77.SpootWifi.Saves.SWStorage;
 public class SWGui extends GenericPopup{
 	
 	public SWGui(String title, SpoutPlayer sp, SWStorage storage) {
-		if(!storage.isBlockStorage() && new SpoutItemStack(sp.getItemInHand()).getMaterial() instanceof Configurable) 
+		if(storage.isItemStackStorage() && new SpoutItemStack(sp.getItemInHand()).getMaterial() instanceof Configurable) 
 		{
 			ConfigurableCheckBox check = new ConfigurableCheckBox(storage, "AutoChannel");
 			check.setText("Auto Channel");
